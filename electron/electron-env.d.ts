@@ -21,7 +21,11 @@ declare namespace NodeJS {
   }
 }
 
-// Used in Renderer process, expose in `preload.ts`
+import type { SystemApi, WindowApi } from '../shared/types/ipc'
+
 interface Window {
-  ipcRenderer: import('electron').IpcRenderer
+  solace: {
+    system: SystemApi
+    window: WindowApi
+  }
 }

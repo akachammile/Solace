@@ -1,9 +1,8 @@
-import { app, BrowserWindow } from 'electron'
-import { createRequire } from 'node:module'
+import { app, BrowserWindow, dialog, ipcMain, type OpenDialogOptions } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import { IPC_CHANNELS } from '../shared/constants/ipc-channels'
 
-const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // The built directory structure
@@ -26,13 +25,74 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 
 let win: BrowserWindow | null
 
+function registerIpcHandlers() {
+  ipcMain.handle(IPC_CHANNELS.system.getAppInfo, () => ({
+    appName: app.getName(),
+    appVersion: app.getVersion(),
+    electronVersion: process.versions.electron,
+    chromeVersion: process.versions.chrome,
+    nodeVersion: process.versions.node,
+    platform: process.platform,
+  }))
+
+  ipcMain.handle(IPC_CHANNELS.system.ping, () => 'pong from main')
+
+  ipcMain.handle(IPC_CHANNELS.system.selectDirectory, async () => {
+    const dialogOptions: OpenDialogOptions = {
+      properties: ['openDirectory'],
+    }
+
+    const result = win
+      ? await dialog.showOpenDialog(win, dialogOptions)
+      : await dialog.showOpenDialog(dialogOptions)
+
+    if (result.canceled || result.filePaths.length === 0) {
+      return null
+    }
+
+    return result.filePaths[0]
+  })
+
+  ipcMain.handle(IPC_CHANNELS.window.minimize, () => {
+    win?.minimize()
+  })
+
+  ipcMain.handle(IPC_CHANNELS.window.toggleMaximize, () => {
+    if (!win) {
+      return
+    }
+
+    if (win.isMaximized()) {
+      win.unmaximize()
+      return
+    }
+
+    win.maximize()
+  })
+
+  ipcMain.handle(IPC_CHANNELS.window.close, () => {
+    win?.close()
+  })
+}
+
 function createWindow() {
+  const publicPath = process.env.VITE_PUBLIC ?? RENDERER_DIST
+
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    width: 1080,
+    height: 670,
+    minWidth: 800,
+    minHeight: 600,
+
+    autoHideMenuBar: true,
+    frame: false,
+    icon: path.join(publicPath, 'electron-vite.svg'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
     },
   })
+
+  win.setMenuBarVisibility(false)
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
@@ -65,4 +125,7 @@ app.on('activate', () => {
   }
 })
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  registerIpcHandlers()
+  createWindow()
+})
