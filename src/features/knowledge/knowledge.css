@@ -1,0 +1,22 @@
+.knowledge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border: 1px solid rgba(79, 140, 255, 0.22);
+  border-radius: 999px;
+  color: #d6e4ff;
+  background: rgba(79, 140, 255, 0.12);
+}
+
+.knowledge-card {
+  min-height: 220px;
+  background:
+    radial-gradient(circle at top right, rgba(79, 140, 255, 0.18), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+}
+
+.knowledge-card__icon {
+  margin-bottom: 12px;
+  color: var(--color-accent-strong);
+}
