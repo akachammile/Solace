@@ -11,6 +11,7 @@ const systemApi: SystemApi = {
 const windowApi: WindowApi = {
   minimize: () => ipcRenderer.invoke(IPC_CHANNELS.window.minimize),
   toggleMaximize: () => ipcRenderer.invoke(IPC_CHANNELS.window.toggleMaximize),
+  toggleDimOverlay: () => ipcRenderer.invoke(IPC_CHANNELS.window.toggleDimOverlay),
   close: () => ipcRenderer.invoke(IPC_CHANNELS.window.close),
 }
 

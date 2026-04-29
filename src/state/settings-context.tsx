@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
+import { getModelProvider } from '../data/model-catalog'
 import type { SettingsState } from '../types/ui'
 
 interface SettingsContextValue {
@@ -10,6 +11,8 @@ interface SettingsContextValue {
 const defaultSettings: SettingsState = {
   provider: 'openai',
   model: 'gpt-4.1-mini',
+  apiKey: '',
+  baseUrl: 'https://api.openai.com/v1',
   temperature: 0.7,
   knowledgePath: './knowledge',
   allowWebSearch: true,
@@ -24,6 +27,12 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setSettings((current) => ({
       ...current,
       [key]: value,
+      ...(key === 'provider'
+        ? {
+            model: getModelProvider(value as SettingsState['provider']).defaultModel,
+            baseUrl: getModelProvider(value as SettingsState['provider']).baseUrl,
+          }
+        : {}),
     }))
   }
 

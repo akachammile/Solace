@@ -16,5 +16,6 @@ export interface SystemApi {
 export interface WindowApi {
   minimize: () => Promise<void>
   toggleMaximize: () => Promise<void>
+  toggleDimOverlay: () => Promise<void>
   close: () => Promise<void>
 }

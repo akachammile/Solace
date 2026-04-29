@@ -1,4 +1,4 @@
-export type ViewType = 'chat' | 'pet' | 'knowledge' | 'settings'
+export type ViewType = 'chat' | 'image' | 'scale' | 'pet' | 'knowledge' | 'settings'
 
 export type MessageRole = 'user' | 'assistant' | 'system'
 
@@ -15,9 +15,13 @@ export interface ToolToggles {
   skill: boolean
 }
 
+export type ModelProvider = 'openai' | 'anthropic' | 'gemini' | 'deepseek' | 'zhipu'
+
 export interface SettingsState {
-  provider: 'openai' | 'anthropic' | 'ollama'
+  provider: ModelProvider
   model: string
+  apiKey: string
+  baseUrl: string
   temperature: number
   knowledgePath: string
   allowWebSearch: boolean

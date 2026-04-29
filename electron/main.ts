@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain, type OpenDialogOptions } from 'electron'
+import { app, BrowserWindow, dialog, ipcMain, screen, type OpenDialogOptions, type Rectangle } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { IPC_CHANNELS } from '../shared/constants/ipc-channels'
@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 // │ │
 // │ ├─┬ dist-electron
 // │ │ ├── main.js
-// │ │ └── preload.mjs
+// │ │ └── preload.js
 // │
 process.env.APP_ROOT = path.join(__dirname, '..')
 
@@ -24,6 +24,7 @@ export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
 
 let win: BrowserWindow | null
+let dimOverlayWindows: BrowserWindow[] = []
 
 function registerIpcHandlers() {
   ipcMain.handle(IPC_CHANNELS.system.getAppInfo, () => ({
@@ -70,14 +71,126 @@ function registerIpcHandlers() {
     win.maximize()
   })
 
+  ipcMain.handle(IPC_CHANNELS.window.toggleDimOverlay, () => {
+    toggleDimOverlay()
+  })
+
   ipcMain.handle(IPC_CHANNELS.window.close, () => {
     win?.close()
   })
 }
 
-function createWindow() {
-  const publicPath = process.env.VITE_PUBLIC ?? RENDERER_DIST
+function createOverlayHtml(hole: Rectangle | null) {
+  const holeStyle = hole
+    ? `
+      .hole {
+        position: fixed;
+        left: ${hole.x}px;
+        top: ${hole.y}px;
+        width: ${hole.width}px;
+        height: ${hole.height}px;
+        border-radius: 14px;
+        box-shadow: 0 0 0 9999px rgba(12, 12, 12, 0.64);
+        outline: 1px solid rgba(255, 255, 255, 0.2);
+      }
+    `
+    : 'body { background: rgba(12, 12, 12, 0.64); }'
 
+  return `
+    <!doctype html>
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <style>
+          html,
+          body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: transparent;
+            pointer-events: none;
+          }
+          ${holeStyle}
+        </style>
+      </head>
+      <body>${hole ? '<div class="hole"></div>' : ''}</body>
+    </html>
+  `
+}
+
+function closeDimOverlay() {
+  dimOverlayWindows.forEach((overlayWindow) => {
+    if (!overlayWindow.isDestroyed()) {
+      overlayWindow.close()
+    }
+  })
+  dimOverlayWindows = []
+}
+
+function showDimOverlay() {
+  if (!win) {
+    return
+  }
+
+  closeDimOverlay()
+
+  const windowBounds = win.getBounds()
+  const displays = screen.getAllDisplays()
+
+  dimOverlayWindows = displays.map((display) => {
+    const displayBounds = display.bounds
+    const overlaps =
+      windowBounds.x < displayBounds.x + displayBounds.width &&
+      windowBounds.x + windowBounds.width > displayBounds.x &&
+      windowBounds.y < displayBounds.y + displayBounds.height &&
+      windowBounds.y + windowBounds.height > displayBounds.y
+
+    const hole = overlaps
+      ? {
+          x: Math.max(windowBounds.x - displayBounds.x, 0),
+          y: Math.max(windowBounds.y - displayBounds.y, 0),
+          width: Math.min(windowBounds.width, displayBounds.width),
+          height: Math.min(windowBounds.height, displayBounds.height),
+        }
+      : null
+
+    const overlayWindow = new BrowserWindow({
+      ...displayBounds,
+      frame: false,
+      transparent: true,
+      resizable: false,
+      movable: false,
+      focusable: false,
+      show: false,
+      skipTaskbar: true,
+      alwaysOnTop: true,
+      webPreferences: {
+        sandbox: true,
+      },
+    })
+
+    overlayWindow.setIgnoreMouseEvents(true)
+    overlayWindow.setAlwaysOnTop(true, 'screen-saver')
+    overlayWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(createOverlayHtml(hole))}`)
+    overlayWindow.once('ready-to-show', () => overlayWindow.showInactive())
+
+    return overlayWindow
+  })
+
+  win.moveTop()
+}
+
+function toggleDimOverlay() {
+  if (dimOverlayWindows.length > 0) {
+    closeDimOverlay()
+    return
+  }
+
+  showDimOverlay()
+}
+
+function createWindow() {
   win = new BrowserWindow({
     width: 1080,
     height: 670,
@@ -86,18 +199,23 @@ function createWindow() {
 
     autoHideMenuBar: true,
     frame: false,
-    icon: path.join(publicPath, 'electron-vite.svg'),
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload: path.join(__dirname, 'preload.js'),
     },
   })
 
   win.setMenuBarVisibility(false)
-
-  // Test active push message to Renderer-process.
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
+  win.on('move', () => {
+    if (dimOverlayWindows.length > 0) {
+      showDimOverlay()
+    }
   })
+  win.on('resize', () => {
+    if (dimOverlayWindows.length > 0) {
+      showDimOverlay()
+    }
+  })
+  win.on('closed', closeDimOverlay)
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL)
