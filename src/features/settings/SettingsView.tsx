@@ -1,102 +1,123 @@
-import { FolderOpen, Globe, Settings2 } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { getAppInfo, pingMain, selectDirectory } from '../../services/electron/system'
+import { FolderOpen, Globe, KeyRound, Link2, SlidersHorizontal } from 'lucide-react'
+import { useState } from 'react'
+import { modelProviders } from '../../data/model-catalog'
+import { selectDirectory } from '../../services/electron/system'
 import { useSettingsState } from '../../state/settings-context'
-import type { AppInfo } from '../../../shared/types/ipc'
+import { TwoTierLayout } from '../../components/TwoTierLayout'
 import './settings.css'
 
 export function SettingsView() {
   const { settings, updateSetting } = useSettingsState()
-  const [appInfo, setAppInfo] = useState<AppInfo | null>(null)
-  const [pingStatus, setPingStatus] = useState('loading...')
+  const activeProvider = modelProviders.find((p) => p.id === settings.provider) ?? modelProviders[0]
   const [directoryStatus, setDirectoryStatus] = useState('')
-
-  useEffect(() => {
-    let isMounted = true
-
-    Promise.all([getAppInfo(), pingMain()]).then(([info, pong]) => {
-      if (!isMounted) {
-        return
-      }
-
-      setAppInfo(info)
-      setPingStatus(pong)
-    })
-
-    return () => {
-      isMounted = false
-    }
-  }, [])
 
   const handleSelectDirectory = async () => {
     setDirectoryStatus('Opening dialog...')
-
     const selectedPath = await selectDirectory()
-
     if (!selectedPath) {
       setDirectoryStatus('Selection canceled')
       return
     }
-
     updateSetting('knowledgePath', selectedPath)
     setDirectoryStatus('Directory selected')
   }
 
   return (
-    <section className="view-shell">
-      <header className="view-header">
-        <div className="view-header__copy">
-          <p className="view-header__eyebrow">Configuration</p>
-          <h1>Settings</h1>
-          <p>Keep model, retrieval, and web access choices stable across view switches.</p>
-        </div>
-        <span className="settings-badge">
-          <Settings2 size={16} />
-          Session state
-        </span>
-      </header>
-
-      <div className="settings-grid">
-        <section className="view-surface settings-panel">
-          <label className="settings-field">
-            <span>Provider</span>
-            <select
-              onChange={(event) => updateSetting('provider', event.target.value as typeof settings.provider)}
-              value={settings.provider}
-            >
-              <option value="openai">OpenAI</option>
-              <option value="anthropic">Anthropic</option>
-              <option value="ollama">Ollama</option>
-            </select>
-          </label>
+    <TwoTierLayout
+      sidebar={
+        <>
+          <div className="two-tier-sidebar-header">
+            <span className="settings-sidebar-title">Model Providers</span>
+          </div>
+          <div className="two-tier-list">
+            {modelProviders.map((provider) => (
+              <button
+                key={provider.id}
+                className={`settings-provider-card ${
+                  settings.provider === provider.id ? 'settings-provider-card--active' : ''
+                }`}
+                onClick={() => updateSetting('provider', provider.id)}
+                type="button"
+              >
+                <span className="settings-provider-card__icon">
+                  <img alt="" src={provider.icon} />
+                </span>
+                <span>
+                  <strong>{provider.name}</strong>
+                  <small>{provider.defaultModel}</small>
+                </span>
+              </button>
+            ))}
+          </div>
+        </>
+      }
+      detail={
+        <div className="settings-panel">
+          <div className="settings-panel__title">
+            <span className="settings-provider-card__icon">
+              <img alt="" src={activeProvider.icon} />
+            </span>
+            <div>
+              <h2>{activeProvider.name}</h2>
+              <p>Model configuration</p>
+            </div>
+          </div>
 
           <label className="settings-field">
             <span>Model</span>
             <input
-              onChange={(event) => updateSetting('model', event.target.value)}
+              onChange={(e) => updateSetting('model', e.target.value)}
               placeholder="Model name"
               value={settings.model}
             />
           </label>
 
           <label className="settings-field">
+            <span>API key</span>
+            <div className="settings-input-with-icon">
+              <KeyRound size={16} />
+              <input
+                onChange={(e) => updateSetting('apiKey', e.target.value)}
+                placeholder={`${activeProvider.name} API key`}
+                type="password"
+                value={settings.apiKey}
+              />
+            </div>
+          </label>
+
+          <label className="settings-field">
+            <span>Base URL</span>
+            <div className="settings-input-with-icon">
+              <Link2 size={16} />
+              <input
+                onChange={(e) => updateSetting('baseUrl', e.target.value)}
+                placeholder={activeProvider.baseUrl}
+                value={settings.baseUrl}
+              />
+            </div>
+          </label>
+
+          <label className="settings-field">
             <span>Temperature</span>
-            <input
-              max={1}
-              min={0}
-              onChange={(event) => updateSetting('temperature', Number(event.target.value))}
-              step={0.1}
-              type="range"
-              value={settings.temperature}
-            />
-            <strong>{settings.temperature.toFixed(1)}</strong>
+            <div className="settings-range-row">
+              <SlidersHorizontal size={16} />
+              <input
+                max={1}
+                min={0}
+                onChange={(e) => updateSetting('temperature', Number(e.target.value))}
+                step={0.1}
+                type="range"
+                value={settings.temperature}
+              />
+              <strong>{settings.temperature.toFixed(1)}</strong>
+            </div>
           </label>
 
           <label className="settings-field">
             <span>Knowledge path</span>
             <div className="settings-directory-row">
               <input
-                onChange={(event) => updateSetting('knowledgePath', event.target.value)}
+                onChange={(e) => updateSetting('knowledgePath', e.target.value)}
                 placeholder="./knowledge"
                 value={settings.knowledgePath}
               />
@@ -111,7 +132,7 @@ export function SettingsView() {
           <label className="settings-toggle">
             <input
               checked={settings.allowWebSearch}
-              onChange={(event) => updateSetting('allowWebSearch', event.target.checked)}
+              onChange={(e) => updateSetting('allowWebSearch', e.target.checked)}
               type="checkbox"
             />
             <span>
@@ -119,34 +140,8 @@ export function SettingsView() {
               Allow web search tools in chat
             </span>
           </label>
-        </section>
-
-        <aside className="stack">
-          <article className="info-card">
-            <h4>Persistence</h4>
-            <p>These values live in React state now. Persist them through preload and main when the shape stabilizes.</p>
-          </article>
-          <article className="info-card">
-            <h4>IPC boundary</h4>
-            <p>Keep API keys and file-system paths behind preload instead of reading them directly in the renderer.</p>
-          </article>
-          <article className="info-card">
-            <h4>Main process status</h4>
-            <p className="settings-meta">Ping: {pingStatus}</p>
-            {appInfo ? (
-              <div className="settings-meta">
-                <p>{appInfo.appName} v{appInfo.appVersion}</p>
-                <p>Electron {appInfo.electronVersion}</p>
-                <p>Chrome {appInfo.chromeVersion}</p>
-                <p>Node {appInfo.nodeVersion}</p>
-                <p>Platform {appInfo.platform}</p>
-              </div>
-            ) : (
-              <p className="settings-meta">Loading app info...</p>
-            )}
-          </article>
-        </aside>
-      </div>
-    </section>
+        </div>
+      }
+    />
   )
 }

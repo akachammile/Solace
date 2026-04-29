@@ -1,6 +1,9 @@
 import {
   BookOpen,
+  Eye,
   HeartHandshake,
+  Image,
+  Layers,
   MessageSquareText,
   Minus,
   Settings,
@@ -9,7 +12,7 @@ import {
   X,
 } from 'lucide-react'
 import { useAppState } from '../state/app-context'
-import { closeWindow, minimizeWindow, toggleMaximizeWindow } from '../services/electron/window'
+import { closeWindow, minimizeWindow, toggleDimOverlay, toggleMaximizeWindow } from '../services/electron/window'
 import type { ViewType } from '../types/ui'
 
 const navigationItems: Array<{
@@ -17,17 +20,12 @@ const navigationItems: Array<{
   view: ViewType
   icon: React.ReactNode
 }> = [
-  { label: 'Chat', view: 'chat', icon: <MessageSquareText size={20} /> },
-  { label: 'Pet', view: 'pet', icon: <HeartHandshake size={20} /> },
-  { label: 'Knowledge', view: 'knowledge', icon: <BookOpen size={20} /> },
+  { label: 'Chat', view: 'chat', icon: <MessageSquareText size={18} /> },
+  { label: 'Image', view: 'image', icon: <Image size={18} /> },
+  { label: 'Scale', view: 'scale', icon: <Layers size={18} /> },
+  { label: 'Pet', view: 'pet', icon: <HeartHandshake size={18} /> },
+  { label: 'Knowledge', view: 'knowledge', icon: <BookOpen size={18} /> },
 ]
-
-const viewTitles = {
-  chat: 'CHAT',
-  pet: 'PET',
-  knowledge: 'KNOWLEDGE',
-  settings: 'SETTINGS',
-} as const
 
 export function ShellChrome() {
   const { activeView, setActiveView } = useAppState()
@@ -39,12 +37,21 @@ export function ShellChrome() {
 
         <div className="shell-window-controls-island">
           <button
+            aria-label="Dim background"
+            className="shell-ctrl-btn shell-ctrl-btn--focus"
+            onClick={() => void toggleDimOverlay()}
+            title="Dim background"
+            type="button"
+          >
+            <Eye size={16} />
+          </button>
+          <button
             aria-label="Minimize"
             className="shell-ctrl-btn"
             onClick={() => void minimizeWindow()}
             type="button"
           >
-            <Minus size={12} />
+            <Minus size={15} />
           </button>
           <button
             aria-label="Maximize"
@@ -52,7 +59,7 @@ export function ShellChrome() {
             onClick={() => void toggleMaximizeWindow()}
             type="button"
           >
-            <Square size={11} />
+            <Square size={14} />
           </button>
           <button
             aria-label="Close"
@@ -60,7 +67,7 @@ export function ShellChrome() {
             onClick={() => void closeWindow()}
             type="button"
           >
-            <X size={12} />
+            <X size={15} />
           </button>
         </div>
       </header>
@@ -73,7 +80,7 @@ export function ShellChrome() {
           onClick={() => setActiveView('chat')}
           type="button"
         >
-          <UserCircle2 size={20} />
+          <UserCircle2 size={18} />
         </button>
 
         <nav aria-label="Primary navigation" className="shell-nav">
@@ -99,7 +106,7 @@ export function ShellChrome() {
             onClick={() => setActiveView('settings')}
             type="button"
           >
-            <Settings size={20} />
+            <Settings size={18} />
           </button>
         </div>
       </aside>

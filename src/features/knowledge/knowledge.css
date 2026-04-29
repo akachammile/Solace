@@ -1,35 +1,16 @@
-.knowledge-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  color: var(--color-text);
-  background: var(--color-bg-elevated);
-  font-size: 0.85rem;
-  font-weight: 500;
-  box-shadow: var(--shadow-soft);
-}
-
-.knowledge-card {
-  min-height: 220px;
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+.knowledge-detail {
   padding: 24px;
-  transition: all var(--transition-fast);
-  box-shadow: var(--shadow-soft);
+  overflow-y: auto;
 }
 
-.knowledge-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-medium);
-  border-color: var(--color-accent-soft);
+.knowledge-detail h2 {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--color-text);
 }
 
-.knowledge-card__icon {
-  margin-bottom: 16px;
-  color: var(--color-accent);
+.knowledge-detail p {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin: 0;
 }
-

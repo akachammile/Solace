@@ -1,19 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { TwoTierLayout } from '../../components/TwoTierLayout'
-import './pet.css'
+import './image-gen.css'
 
-const petItems = [
-  { id: '1', name: 'Energy & mood tracker' },
-  { id: '2', name: 'Focus ritual' },
-  { id: '3', name: 'Streak companion' },
-  { id: '4', name: 'Emotion journal' },
-  { id: '5', name: 'Break reminder' },
+const imageItems = [
+  { id: '1', name: 'Cinematic landscape' },
+  { id: '2', name: 'Abstract minimalism' },
+  { id: '3', name: 'Character concept' },
+  { id: '4', name: 'Product photography' },
+  { id: '5', name: 'Pixel art sprite' },
 ]
 
-export function PetView() {
+export function ImageGenView() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const selected = petItems.find((s) => s.id === selectedId)
+  const selected = imageItems.find((s) => s.id === selectedId)
 
   return (
     <TwoTierLayout
@@ -22,11 +22,11 @@ export function PetView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>New Companion</span>
+              <span>New Prompt</span>
             </button>
           </div>
           <div className="two-tier-list">
-            {petItems.map((item) => (
+            {imageItems.map((item) => (
               <div
                 key={item.id}
                 className={`two-tier-capsule ${selectedId === item.id ? 'two-tier-capsule--active' : ''}`}
@@ -44,12 +44,12 @@ export function PetView() {
         </>
       }
       detail={selected ? (
-        <div className="pet-detail">
+        <div className="image-detail">
           <h2>{selected.name}</h2>
-          <p>Pet companion configuration will go here.</p>
+          <p>Image generation area will go here.</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select a companion</span></>}
+      emptyState={<><Sparkles size={20} /><span>Select or create a prompt</span></>}
     />
   )
 }

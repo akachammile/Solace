@@ -1,19 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
 import { TwoTierLayout } from '../../components/TwoTierLayout'
-import './pet.css'
+import './scale.css'
 
-const petItems = [
-  { id: '1', name: 'Energy & mood tracker' },
-  { id: '2', name: 'Focus ritual' },
-  { id: '3', name: 'Streak companion' },
-  { id: '4', name: 'Emotion journal' },
-  { id: '5', name: 'Break reminder' },
+const scaleItems = [
+  { id: '1', name: 'Likert 5-Point Scale' },
+  { id: '2', name: 'Binary Rating (Yes/No)' },
+  { id: '3', name: 'Semantic Differential' },
+  { id: '4', name: 'Guttman Scale' },
+  { id: '5', name: 'NPS (Net Promoter Score)' },
 ]
 
-export function PetView() {
+export function ScaleView() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const selected = petItems.find((s) => s.id === selectedId)
+  const selected = scaleItems.find((s) => s.id === selectedId)
 
   return (
     <TwoTierLayout
@@ -22,11 +22,11 @@ export function PetView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>New Companion</span>
+              <span>New Scale</span>
             </button>
           </div>
           <div className="two-tier-list">
-            {petItems.map((item) => (
+            {scaleItems.map((item) => (
               <div
                 key={item.id}
                 className={`two-tier-capsule ${selectedId === item.id ? 'two-tier-capsule--active' : ''}`}
@@ -44,12 +44,12 @@ export function PetView() {
         </>
       }
       detail={selected ? (
-        <div className="pet-detail">
+        <div className="scale-detail">
           <h2>{selected.name}</h2>
-          <p>Pet companion configuration will go here.</p>
+          <p>Scale configuration will go here.</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select a companion</span></>}
+      emptyState={<><Sparkles size={20} /><span>Select a scale</span></>}
     />
   )
 }

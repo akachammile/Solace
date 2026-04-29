@@ -10,17 +10,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Claude-inspired Modern Palette */
-  --color-bg: #F3F0EC; /* Unified Shell Color (Warm Gray) */
+  --color-bg: #EEF1F3;
   --color-bg-elevated: #FFFFFF;
-  --color-surface: #FCFAF8;
-  --color-sidebar: #F3F0EC; /* Same as bg for seamless transition */
-  --color-border: #E5E0DA;
+  --color-surface: #F8F9F7;
+  --color-sidebar: #E8EEEC;
+  --color-border: #DDE3E0;
   --color-text: #212121;
-  --color-text-muted: #6B6B6B;
-  --color-accent: #D97757;
-  --color-accent-strong: #C15D40;
-  --color-accent-soft: rgba(217, 119, 87, 0.08);
+  --color-text-muted: #68716E;
+  --color-accent: #2F7D6D;
+  --color-accent-strong: #246756;
+  --color-accent-soft: rgba(47, 125, 109, 0.1);
   --color-success: #45826A;
   --color-warning: #E29A32;
   --color-danger: #B9443D;

@@ -1,15 +1,15 @@
-.pet-detail {
+.image-detail {
   padding: 24px;
   overflow-y: auto;
 }
 
-.pet-detail h2 {
+.image-detail h2 {
   margin: 0 0 8px;
   font-size: 1.1rem;
   color: var(--color-text);
 }
 
-.pet-detail p {
+.image-detail p {
   color: var(--color-text-muted);
   font-size: 0.85rem;
   margin: 0;
