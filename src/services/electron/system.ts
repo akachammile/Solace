@@ -1,4 +1,4 @@
-import type { AppInfo } from '../../../shared/types/ipc'
+import type { AppInfo, TestConnectionResult } from '@shared/types/ipc'
 
 export function getAppInfo(): Promise<AppInfo> {
   return window.solace.system.getAppInfo()
@@ -10,4 +10,13 @@ export function pingMain(): Promise<string> {
 
 export function selectDirectory(): Promise<string | null> {
   return window.solace.system.selectDirectory()
+}
+
+export function testConnection(
+  baseUrl: string,
+  apiKey: string,
+  authHeader: string,
+  testEndpoint: string,
+): Promise<TestConnectionResult> {
+  return window.solace.system.testConnection(baseUrl, apiKey, authHeader, testEndpoint)
 }
