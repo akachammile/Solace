@@ -1,17 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import { TwoTierLayout } from '../../components/TwoTierLayout'
+import { useTranslation } from 'react-i18next'
+import { TwoTierLayout } from '@/components/TwoTierLayout'
 import './knowledge.css'
 
 const knowledgeItems = [
-  { id: '1', name: 'Project notes' },
-  { id: '2', name: 'API documentation' },
-  { id: '3', name: 'Meeting summaries' },
-  { id: '4', name: 'Research papers' },
-  { id: '5', name: 'Code snippets' },
+  { id: '1' },
+  { id: '2' },
+  { id: '3' },
+  { id: '4' },
+  { id: '5' },
 ]
 
 export function KnowledgeView() {
+  const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selected = knowledgeItems.find((s) => s.id === selectedId)
 
@@ -22,7 +24,7 @@ export function KnowledgeView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>Add Source</span>
+              <span>{t('knowledge.addSource')}</span>
             </button>
           </div>
           <div className="two-tier-list">
@@ -36,7 +38,7 @@ export function KnowledgeView() {
                   onClick={() => setSelectedId(item.id)}
                   type="button"
                 >
-                  <span className="two-tier-capsule__title">{item.name}</span>
+                  <span className="two-tier-capsule__title">{t(`knowledge.items.${item.id}`)}</span>
                 </button>
               </div>
             ))}
@@ -45,11 +47,11 @@ export function KnowledgeView() {
       }
       detail={selected ? (
         <div className="knowledge-detail">
-          <h2>{selected.name}</h2>
-          <p>Document preview will go here.</p>
+          <h2>{t(`knowledge.items.${selected.id}`)}</h2>
+          <p>{t('knowledge.previewDesc')}</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select a document</span></>}
+      emptyState={<><Sparkles size={20} /><span>{t('knowledge.selectDoc')}</span></>}
     />
   )
 }

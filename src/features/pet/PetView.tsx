@@ -1,17 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import { TwoTierLayout } from '../../components/TwoTierLayout'
+import { useTranslation } from 'react-i18next'
+import { TwoTierLayout } from '@/components/TwoTierLayout'
 import './pet.css'
 
 const petItems = [
-  { id: '1', name: 'Energy & mood tracker' },
-  { id: '2', name: 'Focus ritual' },
-  { id: '3', name: 'Streak companion' },
-  { id: '4', name: 'Emotion journal' },
-  { id: '5', name: 'Break reminder' },
+  { id: '1' },
+  { id: '2' },
+  { id: '3' },
+  { id: '4' },
+  { id: '5' },
 ]
 
 export function PetView() {
+  const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selected = petItems.find((s) => s.id === selectedId)
 
@@ -22,7 +24,7 @@ export function PetView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>New Companion</span>
+              <span>{t('pet.newCompanion')}</span>
             </button>
           </div>
           <div className="two-tier-list">
@@ -36,7 +38,7 @@ export function PetView() {
                   onClick={() => setSelectedId(item.id)}
                   type="button"
                 >
-                  <span className="two-tier-capsule__title">{item.name}</span>
+                  <span className="two-tier-capsule__title">{t(`pet.items.${item.id}`)}</span>
                 </button>
               </div>
             ))}
@@ -45,11 +47,11 @@ export function PetView() {
       }
       detail={selected ? (
         <div className="pet-detail">
-          <h2>{selected.name}</h2>
-          <p>Pet companion configuration will go here.</p>
+          <h2>{t(`pet.items.${selected.id}`)}</h2>
+          <p>{t('pet.configDesc')}</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select a companion</span></>}
+      emptyState={<><Sparkles size={20} /><span>{t('pet.selectCompanion')}</span></>}
     />
   )
 }

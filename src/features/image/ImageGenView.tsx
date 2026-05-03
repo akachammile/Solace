@@ -1,17 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import { TwoTierLayout } from '../../components/TwoTierLayout'
+import { useTranslation } from 'react-i18next'
+import { TwoTierLayout } from '@/components/TwoTierLayout'
 import './image-gen.css'
 
 const imageItems = [
-  { id: '1', name: 'Cinematic landscape' },
-  { id: '2', name: 'Abstract minimalism' },
-  { id: '3', name: 'Character concept' },
-  { id: '4', name: 'Product photography' },
-  { id: '5', name: 'Pixel art sprite' },
+  { id: '1' },
+  { id: '2' },
+  { id: '3' },
+  { id: '4' },
+  { id: '5' },
 ]
 
 export function ImageGenView() {
+  const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selected = imageItems.find((s) => s.id === selectedId)
 
@@ -22,7 +24,7 @@ export function ImageGenView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>New Prompt</span>
+              <span>{t('image.newPrompt')}</span>
             </button>
           </div>
           <div className="two-tier-list">
@@ -36,7 +38,7 @@ export function ImageGenView() {
                   onClick={() => setSelectedId(item.id)}
                   type="button"
                 >
-                  <span className="two-tier-capsule__title">{item.name}</span>
+                  <span className="two-tier-capsule__title">{t(`image.items.${item.id}`)}</span>
                 </button>
               </div>
             ))}
@@ -45,11 +47,11 @@ export function ImageGenView() {
       }
       detail={selected ? (
         <div className="image-detail">
-          <h2>{selected.name}</h2>
-          <p>Image generation area will go here.</p>
+          <h2>{t(`image.items.${selected.id}`)}</h2>
+          <p>{t('image.generationDesc')}</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select or create a prompt</span></>}
+      emptyState={<><Sparkles size={20} /><span>{t('image.selectPrompt')}</span></>}
     />
   )
 }

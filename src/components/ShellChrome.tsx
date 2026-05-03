@@ -11,24 +11,25 @@ import {
   UserCircle2,
   X,
 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { useAppState } from '../state/app-context'
 import { closeWindow, minimizeWindow, toggleDimOverlay, toggleMaximizeWindow } from '../services/electron/window'
 import type { ViewType } from '../types/ui'
 
 const navigationItems: Array<{
-  label: string
   view: ViewType
   icon: React.ReactNode
 }> = [
-  { label: 'Chat', view: 'chat', icon: <MessageSquareText size={18} /> },
-  { label: 'Image', view: 'image', icon: <Image size={18} /> },
-  { label: 'Scale', view: 'scale', icon: <Layers size={18} /> },
-  { label: 'Pet', view: 'pet', icon: <HeartHandshake size={18} /> },
-  { label: 'Knowledge', view: 'knowledge', icon: <BookOpen size={18} /> },
+  { view: 'chat', icon: <MessageSquareText size={18} /> },
+  { view: 'image', icon: <Image size={18} /> },
+  { view: 'scale', icon: <Layers size={18} /> },
+  { view: 'pet', icon: <HeartHandshake size={18} /> },
+  { view: 'knowledge', icon: <BookOpen size={18} /> },
 ]
 
 export function ShellChrome() {
   const { activeView, setActiveView } = useAppState()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -37,16 +38,16 @@ export function ShellChrome() {
 
         <div className="shell-window-controls-island">
           <button
-            aria-label="Dim background"
+            aria-label={t('shell.dimBackground')}
             className="shell-ctrl-btn shell-ctrl-btn--focus"
             onClick={() => void toggleDimOverlay()}
-            title="Dim background"
+            title={t('shell.dimBackground')}
             type="button"
           >
             <Eye size={16} />
           </button>
           <button
-            aria-label="Minimize"
+            aria-label={t('shell.minimize')}
             className="shell-ctrl-btn"
             onClick={() => void minimizeWindow()}
             type="button"
@@ -54,7 +55,7 @@ export function ShellChrome() {
             <Minus size={15} />
           </button>
           <button
-            aria-label="Maximize"
+            aria-label={t('shell.maximize')}
             className="shell-ctrl-btn"
             onClick={() => void toggleMaximizeWindow()}
             type="button"
@@ -62,7 +63,7 @@ export function ShellChrome() {
             <Square size={14} />
           </button>
           <button
-            aria-label="Close"
+            aria-label={t('shell.close')}
             className="shell-ctrl-btn shell-ctrl-btn--close"
             onClick={() => void closeWindow()}
             type="button"
@@ -74,8 +75,8 @@ export function ShellChrome() {
 
       <aside className="shell-left-rail">
         <button
-          aria-label="User profile"
-          data-tooltip="Profile"
+          aria-label={t('shell.userProfile')}
+          data-tooltip={t('shell.profile')}
           className="shell-corner-avatar"
           onClick={() => setActiveView('chat')}
           type="button"
@@ -83,12 +84,12 @@ export function ShellChrome() {
           <UserCircle2 size={18} />
         </button>
 
-        <nav aria-label="Primary navigation" className="shell-nav">
+        <nav aria-label={t('shell.primaryNav')} className="shell-nav">
           {navigationItems.map((item) => (
             <button
               key={item.view}
-              aria-label={item.label}
-              data-tooltip={item.label}
+              aria-label={t(`nav.${item.view}`)}
+              data-tooltip={t(`nav.${item.view}`)}
               className={`shell-nav__button ${activeView === item.view ? 'shell-nav__button--active' : ''}`}
               onClick={() => setActiveView(item.view)}
               type="button"
@@ -100,8 +101,8 @@ export function ShellChrome() {
 
         <div className="shell-bottom-actions" style={{ marginTop: 'auto', paddingBottom: '4px' }}>
           <button
-            aria-label="Settings"
-            data-tooltip="Settings"
+            aria-label={t('nav.settings')}
+            data-tooltip={t('nav.settings')}
             className={`shell-nav__button ${activeView === 'settings' ? 'shell-nav__button--active' : ''}`}
             onClick={() => setActiveView('settings')}
             type="button"

@@ -1,20 +1,17 @@
-import { useChatState } from '../../state/chat-context'
-import { formatDistanceToNow as formatRelativeTime } from './time'
+import type { Message } from '@/types/ui'
 
-export function MessageList() {
-  const { messages } = useChatState()
+interface MessageListProps {
+  messages: Message[]
+}
 
+export function MessageList({ messages }: MessageListProps) {
   return (
     <div className="message-list">
       {messages.map((message) => (
         <div
           key={message.id}
-          className={`message-bubble message-bubble--${message.role}`}
+          className={`message-bubble message-bubble--${message.role}${message.isStreaming ? ' message-bubble--streaming' : ''}`}
         >
-          <div className="message-bubble__meta">
-            <span>{message.role}</span>
-            <span>{formatRelativeTime(message.timestamp)}</span>
-          </div>
           <p>{message.content}</p>
         </div>
       ))}

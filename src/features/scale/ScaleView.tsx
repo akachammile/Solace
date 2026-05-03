@@ -1,17 +1,19 @@
 import { Plus, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import { TwoTierLayout } from '../../components/TwoTierLayout'
+import { useTranslation } from 'react-i18next'
+import { TwoTierLayout } from '@/components/TwoTierLayout'
 import './scale.css'
 
 const scaleItems = [
-  { id: '1', name: 'Likert 5-Point Scale' },
-  { id: '2', name: 'Binary Rating (Yes/No)' },
-  { id: '3', name: 'Semantic Differential' },
-  { id: '4', name: 'Guttman Scale' },
-  { id: '5', name: 'NPS (Net Promoter Score)' },
+  { id: '1' },
+  { id: '2' },
+  { id: '3' },
+  { id: '4' },
+  { id: '5' },
 ]
 
 export function ScaleView() {
+  const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const selected = scaleItems.find((s) => s.id === selectedId)
 
@@ -22,7 +24,7 @@ export function ScaleView() {
           <div className="two-tier-sidebar-header">
             <button className="two-tier-action-btn" type="button">
               <Plus size={16} />
-              <span>New Scale</span>
+              <span>{t('scale.newScale')}</span>
             </button>
           </div>
           <div className="two-tier-list">
@@ -36,7 +38,7 @@ export function ScaleView() {
                   onClick={() => setSelectedId(item.id)}
                   type="button"
                 >
-                  <span className="two-tier-capsule__title">{item.name}</span>
+                  <span className="two-tier-capsule__title">{t(`scale.items.${item.id}`)}</span>
                 </button>
               </div>
             ))}
@@ -45,11 +47,11 @@ export function ScaleView() {
       }
       detail={selected ? (
         <div className="scale-detail">
-          <h2>{selected.name}</h2>
-          <p>Scale configuration will go here.</p>
+          <h2>{t(`scale.items.${selected.id}`)}</h2>
+          <p>{t('scale.configDesc')}</p>
         </div>
       ) : undefined}
-      emptyState={<><Sparkles size={20} /><span>Select a scale</span></>}
+      emptyState={<><Sparkles size={20} /><span>{t('scale.selectScale')}</span></>}
     />
   )
 }
