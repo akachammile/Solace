@@ -21,11 +21,12 @@ declare namespace NodeJS {
   }
 }
 
-import type { SystemApi, WindowApi } from '../shared/types/ipc'
+import type { SystemApi, WindowApi, AcpApi } from '../shared/types/ipc'
 
 interface Window {
   solace: {
     system: SystemApi
     window: WindowApi
+    acp: AcpApi
   }
 }
