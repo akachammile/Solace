@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
-import { getModelProvider } from '../data/model-catalog'
-import type { SettingsState } from '../types/ui'
+import { getProvider } from '@/data/model-catalog'
+import type { SettingsState } from '@/types/ui'
 
 interface SettingsContextValue {
   settings: SettingsState
@@ -9,13 +9,27 @@ interface SettingsContextValue {
 }
 
 const defaultSettings: SettingsState = {
-  provider: 'openai',
-  model: 'gpt-4.1-mini',
+  language: 'zh',
+  provider: 'anthropic',
+  model: 'claude-sonnet-4-6',
   apiKey: '',
-  baseUrl: 'https://api.openai.com/v1',
+  baseUrl: 'https://api.anthropic.com',
   temperature: 0.7,
   knowledgePath: './knowledge',
   allowWebSearch: true,
+  agentConfig: {
+    command: 'npx',
+    args: 'tsx agent.ts',
+    cwd: '~',
+  },
+  skillsConfig: {
+    webSearch: true,
+    fileOperations: true,
+    terminal: false,
+    mcp: false,
+    codeInterpreter: true,
+    rag: true,
+  },
 }
 
 const SettingsContext = createContext<SettingsContextValue | null>(null)
@@ -29,8 +43,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       [key]: value,
       ...(key === 'provider'
         ? {
-            model: getModelProvider(value as SettingsState['provider']).defaultModel,
-            baseUrl: getModelProvider(value as SettingsState['provider']).baseUrl,
+            model: getProvider(value as SettingsState['provider']).models[0].id,
+            baseUrl: getProvider(value as SettingsState['provider']).baseUrl,
           }
         : {}),
     }))
