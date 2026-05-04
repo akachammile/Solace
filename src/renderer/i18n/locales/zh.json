@@ -1,0 +1,163 @@
+{
+  "common": {
+    "language": "语言",
+    "zh": "中文",
+    "en": "English"
+  },
+  "settings": {
+    "title": "设置",
+    "general": "通用",
+    "systemConfig": "系统配置",
+    "modelService": "模型服务",
+    "providers": "服务商",
+    "skills": "技能",
+    "optionsCount": "{{count}} 个选项",
+    "apiServer": "API 服务",
+    "endpointAgent": "端点与代理",
+    "modelProviders": "模型服务商",
+    "modelsCount": "{{count}} 个模型",
+    "workspace": "工作区",
+    "knowledgePath": "知识库路径",
+    "agent": "代理 (Agent)",
+    "acpCommand": "ACP 命令",
+    "modelDesc": "配置模型、生成行为及连接信息",
+    "provider": "服务商",
+    "model": "模型",
+    "temperature": "温度",
+    "connection": "连接",
+    "apiKeyPlaceholder": "{{name}} API 密钥",
+    "test": "测试",
+    "enableSkill": "启用 {{name}}",
+    "on": "开",
+    "off": "关",
+    "providerLabel": "服务商: {{name}}",
+    "idLabel": "ID: {{id}}",
+    "workspaceDesc": "知识库路径与聊天工具权限",
+    "browse": "浏览",
+    "allowWebSearch": "允许在聊天中使用网络搜索",
+    "agentDesc": "ACP 命令与工作目录",
+    "agentAcp": "代理 (ACP)",
+    "commandPlaceholder": "命令 (例如 npx)",
+    "argsPlaceholder": "参数 (例如 tsx agent.ts)",
+    "workingDirPlaceholder": "工作目录",
+    "emptyState": "请选择一个选项",
+    "languageLabel": "语言",
+    "languageDesc": "系统显示语言",
+    "dialog": {
+      "opening": "正在打开对话框...",
+      "canceled": "选择已取消",
+      "selected": "已选择"
+    },
+    "testConn": {
+      "required": "需要 API 密钥",
+      "connected": "已连接 ({{latency}}ms)",
+      "failed": "连接失败",
+      "httpError": "HTTP {{status}} - 请检查 API 密钥或 Base URL"
+    }
+  },
+  "chat": {
+    "agentNotRunning": "代理未运行...",
+    "typeMessage": "输入消息...",
+    "clearContext": "清除上下文",
+    "newChat": "新对话",
+    "moreActions": "更多操作",
+    "delete": "删除",
+    "agentConnectionLost": "与代理的连接已断开",
+    "createNewChat": "创建一个新对话以开始",
+    "startingAgent": "正在启动代理..."
+  },
+  "nav": {
+    "chat": "对话",
+    "image": "图像",
+    "scale": "量表",
+    "pet": "宠物",
+    "knowledge": "知识库",
+    "settings": "设置"
+  },
+  "shell": {
+    "dimBackground": "调暗背景",
+    "minimize": "最小化",
+    "maximize": "最大化",
+    "close": "关闭",
+    "userProfile": "用户配置",
+    "profile": "配置",
+    "primaryNav": "主导航"
+  },
+  "layout": {
+    "selectItem": "请选择一个项目"
+  },
+  "knowledge": {
+    "addSource": "添加源",
+    "previewDesc": "文档预览将在此显示。",
+    "selectDoc": "选择一个文档",
+    "items": {
+      "1": "项目笔记",
+      "2": "API 文档",
+      "3": "会议摘要",
+      "4": "研究论文",
+      "5": "代码片段"
+    }
+  },
+  "image": {
+    "newPrompt": "新提示词",
+    "generationDesc": "图像生成区域将在此显示。",
+    "selectPrompt": "选择或创建一个提示词",
+    "items": {
+      "1": "电影感风景",
+      "2": "抽象极简主义",
+      "3": "角色概念设定",
+      "4": "产品摄影",
+      "5": "像素艺术精灵"
+    }
+  },
+  "pet": {
+    "newCompanion": "新陪伴宠物",
+    "configDesc": "宠物陪伴配置将在此显示。",
+    "selectCompanion": "选择一个陪伴宠物",
+    "items": {
+      "1": "精力与情绪追踪器",
+      "2": "专注仪式",
+      "3": "连续打卡伙伴",
+      "4": "情感日记",
+      "5": "休息提醒"
+    }
+  },
+  "scale": {
+    "newScale": "新量表",
+    "configDesc": "量表配置将在此显示。",
+    "selectScale": "选择一个量表",
+    "items": {
+      "1": "李克特五点量表",
+      "2": "二元评级 (是/否)",
+      "3": "语义差异量表",
+      "4": "古特曼量表",
+      "5": "NPS (净推荐值)"
+    }
+  },
+  "skills": {
+    "web-search": {
+      "name": "网络搜索",
+      "desc": "实时搜索网络并检索当前信息"
+    },
+    "file-operations": {
+      "name": "文件操作",
+      "desc": "读取、写入和管理本地文件系统上的文件"
+    },
+    "terminal": {
+      "name": "终端",
+      "desc": "在沙盒环境中执行 Shell 命令和脚本"
+    },
+    "mcp": {
+      "name": "MCP 工具",
+      "desc": "连接到 Model Context Protocol (模型上下文协议) 服务器以扩展功能"
+    },
+    "code-interpreter": {
+      "name": "代码解释器",
+      "desc": "运行并分析 Python、JavaScript 等语言的代码片段"
+    },
+    "rag": {
+      "name": "知识检索",
+      "desc": "搜索并引用您的知识库中的文档"
+    }
+  }
+}

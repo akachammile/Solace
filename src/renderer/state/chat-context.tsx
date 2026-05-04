@@ -2,7 +2,7 @@
 import { createContext, useContext, useMemo, useState, useRef, useEffect, useCallback, type ReactNode } from 'react'
 import type { Message, ToolToggles } from '@/types/ui'
 import type { AgentConfig, AgentInfo, AgentStatus } from '@shared/types/acp'
-import type { ChatSession } from '@/features/acp/types'
+import type { ChatSession } from '@/pages/acp/types'
 import {
   spawnAgent,
   initializeAgent,
@@ -16,7 +16,7 @@ import {
   onAgentError,
   onPermissionRequest,
   onAgentStatusChange,
-} from '@/features/acp/service'
+} from '@/pages/acp/service'
 import type { StreamChunk, PromptResult, AgentError, PermissionRequest } from '@shared/types/acp'
 
 interface ChatContextValue {

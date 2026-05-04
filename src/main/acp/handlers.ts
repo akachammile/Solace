@@ -1,7 +1,7 @@
 import { ipcMain } from 'electron'
-import { IPC_CHANNELS } from '../../shared/constants/ipc-channels'
+import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
 import { acpManager } from './manager'
-import type { AgentConfig, PermissionResponse } from '../../shared/types/acp'
+import type { AgentConfig, PermissionResponse } from '@shared/types/acp'
 
 export function registerAcpHandlers() {
   ipcMain.handle(IPC_CHANNELS.acp.spawnAgent, async (_event, config: AgentConfig) => {

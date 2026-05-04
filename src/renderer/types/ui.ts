@@ -1,4 +1,4 @@
-import type { AgentConfigUi } from '@/features/acp/types'
+import type { AgentConfigUi } from '@/pages/acp/types'
 
 export type ViewType = 'chat' | 'image' | 'scale' | 'pet' | 'knowledge' | 'settings'
 

@@ -19,18 +19,19 @@ No test runner is configured yet.
 
 ## Architecture
 
-Two-process Electron architecture with strict separation:
+Three-layer Electron architecture, all under `src/`:
 
-- **`electron/main.ts`** — Main process. Creates BrowserWindow, manages app lifecycle, handles native/OS integrations. Built to `dist-electron/main.js`.
-- **`electron/preload.ts`** — Context bridge. Exposes `window.ipcRenderer` (on/off/send/invoke) to the renderer. All renderer-to-main communication must go through this file.
-- **`src/`** — Renderer process (React app). Entry at `src/main.tsx`, root component `src/App.tsx`.
+- **`src/main/`** — Main process. Entry `src/main/main.ts`. Creates BrowserWindow, manages app lifecycle, handles native/OS integrations and ACP agent management. Built to `dist-electron/main.js`.
+- **`src/preload/`** — Context bridge. Entry `src/preload/preload.ts`. Exposes `window.solace` (system/window/acp APIs) to the renderer via `contextBridge.exposeInMainWorld`. All renderer-to-main communication must go through this file.
+- **`src/renderer/`** — Renderer process (React app). Entry at `src/renderer/main.tsx`, root component `src/renderer/App.tsx`. Uses `@/` path alias.
+- **`src/shared/`** — Shared types and constants (IPC channels, ACP types, IPC API interfaces) used by both main and preload.
 - **Build outputs** (`dist/`, `dist-electron/`, `release/`) are generated — never edit manually.
 
-**Key rule:** Never import Electron APIs directly in `src/`. If renderer code needs native capability, add an IPC channel in `preload.ts` and handle it in `main.ts`.
+**Key rule:** Never import Electron APIs directly in `src/renderer/`. If renderer code needs native capability, add an IPC channel in `src/shared/constants/ipc-channels.ts`, expose it in `src/preload/preload.ts`, and handle it in `src/main/main.ts`.
 
 ## Build Pipeline
 
-1. `tsc` — Type-checks both `src/` and `electron/` (strict mode)
+1. `tsc` — Type-checks `src/` (strict mode)
 2. `vite build` — Bundles renderer to `dist/`
 3. `vite-plugin-electron` — Bundles main/preload to `dist-electron/`
 4. `electron-builder` — Packages app per `electron-builder.json5` (NSIS for Windows, DMG for macOS, AppImage for Linux)

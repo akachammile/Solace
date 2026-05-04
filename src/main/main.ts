@@ -1,24 +1,14 @@
 import { app, BrowserWindow, dialog, ipcMain, screen, type OpenDialogOptions, type Rectangle } from 'electron'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { IPC_CHANNELS } from '../shared/constants/ipc-channels'
+import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
 import { registerAcpHandlers } from './acp/handlers'
 import { acpManager } from './acp/manager'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.js
-// │
 process.env.APP_ROOT = path.join(__dirname, '..')
 
-// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
 export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')

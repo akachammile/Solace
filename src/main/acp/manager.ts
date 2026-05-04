@@ -4,12 +4,12 @@ import { Readable, Writable } from 'node:stream'
 import { homedir } from 'node:os'
 import type { BrowserWindow } from 'electron'
 import * as acp from '@agentclientprotocol/sdk'
-import { IPC_CHANNELS } from '../../shared/constants/ipc-channels'
+import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
 import type {
   AgentConfig, AgentInfo, AgentStatus, SessionInfo,
   StreamChunk, PromptResult, AgentError,
   PermissionRequest, PermissionResponse,
-} from '../../shared/types/acp'
+} from '@shared/types/acp'
 
 interface RunningAgent {
   id: string

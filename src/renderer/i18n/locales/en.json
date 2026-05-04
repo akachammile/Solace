@@ -1,0 +1,163 @@
+{
+  "common": {
+    "language": "Language",
+    "zh": "中文",
+    "en": "English"
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "systemConfig": "System configuration",
+    "modelService": "Model Service",
+    "providers": "Providers",
+    "skills": "Skills",
+    "optionsCount": "{{count}} options",
+    "apiServer": "API Server",
+    "endpointAgent": "Endpoint & agent",
+    "modelProviders": "Model Providers",
+    "modelsCount": "{{count}} models",
+    "workspace": "Workspace",
+    "knowledgePath": "Knowledge path",
+    "agent": "Agent",
+    "acpCommand": "ACP command",
+    "modelDesc": "Configure models, generation behavior, and connection details",
+    "provider": "Provider",
+    "model": "Model",
+    "temperature": "Temperature",
+    "connection": "Connection",
+    "apiKeyPlaceholder": "{{name}} API key",
+    "test": "Test",
+    "enableSkill": "Enable {{name}}",
+    "on": "On",
+    "off": "Off",
+    "providerLabel": "Provider: {{name}}",
+    "idLabel": "ID: {{id}}",
+    "workspaceDesc": "Knowledge path and chat tool access",
+    "browse": "Browse",
+    "allowWebSearch": "Allow web search in chat",
+    "agentDesc": "ACP command and working directory",
+    "agentAcp": "Agent (ACP)",
+    "commandPlaceholder": "Command (e.g. npx)",
+    "argsPlaceholder": "Args (e.g. tsx agent.ts)",
+    "workingDirPlaceholder": "Working directory",
+    "emptyState": "Select an option",
+    "languageLabel": "Language",
+    "languageDesc": "System display language",
+    "dialog": {
+      "opening": "Opening dialog...",
+      "canceled": "Selection canceled",
+      "selected": "Selected"
+    },
+    "testConn": {
+      "required": "API key is required",
+      "connected": "Connected ({{latency}}ms)",
+      "failed": "Connection failed",
+      "httpError": "HTTP {{status}} - check API key or base URL"
+    }
+  },
+  "chat": {
+    "agentNotRunning": "Agent is not running...",
+    "typeMessage": "Type a message...",
+    "clearContext": "Clear context",
+    "newChat": "New Chat",
+    "moreActions": "More actions",
+    "delete": "Delete",
+    "agentConnectionLost": "Agent connection lost",
+    "createNewChat": "Create a new chat to get started",
+    "startingAgent": "Starting agent..."
+  },
+  "nav": {
+    "chat": "Chat",
+    "image": "Image",
+    "scale": "Scale",
+    "pet": "Pet",
+    "knowledge": "Knowledge",
+    "settings": "Settings"
+  },
+  "shell": {
+    "dimBackground": "Dim background",
+    "minimize": "Minimize",
+    "maximize": "Maximize",
+    "close": "Close",
+    "userProfile": "User profile",
+    "profile": "Profile",
+    "primaryNav": "Primary navigation"
+  },
+  "layout": {
+    "selectItem": "Select an item"
+  },
+  "knowledge": {
+    "addSource": "Add Source",
+    "previewDesc": "Document preview will go here.",
+    "selectDoc": "Select a document",
+    "items": {
+      "1": "Project notes",
+      "2": "API documentation",
+      "3": "Meeting summaries",
+      "4": "Research papers",
+      "5": "Code snippets"
+    }
+  },
+  "image": {
+    "newPrompt": "New Prompt",
+    "generationDesc": "Image generation area will go here.",
+    "selectPrompt": "Select or create a prompt",
+    "items": {
+      "1": "Cinematic landscape",
+      "2": "Abstract minimalism",
+      "3": "Character concept",
+      "4": "Product photography",
+      "5": "Pixel art sprite"
+    }
+  },
+  "pet": {
+    "newCompanion": "New Companion",
+    "configDesc": "Pet companion configuration will go here.",
+    "selectCompanion": "Select a companion",
+    "items": {
+      "1": "Energy & mood tracker",
+      "2": "Focus ritual",
+      "3": "Streak companion",
+      "4": "Emotion journal",
+      "5": "Break reminder"
+    }
+  },
+  "scale": {
+    "newScale": "New Scale",
+    "configDesc": "Scale configuration will go here.",
+    "selectScale": "Select a scale",
+    "items": {
+      "1": "Likert 5-Point Scale",
+      "2": "Binary Rating (Yes/No)",
+      "3": "Semantic Differential",
+      "4": "Guttman Scale",
+      "5": "NPS (Net Promoter Score)"
+    }
+  },
+  "skills": {
+    "web-search": {
+      "name": "Web Search",
+      "desc": "Search the web in real-time and retrieve current information"
+    },
+    "file-operations": {
+      "name": "File Operations",
+      "desc": "Read, write, and manage files on the local filesystem"
+    },
+    "terminal": {
+      "name": "Terminal",
+      "desc": "Execute shell commands and scripts in a sandboxed environment"
+    },
+    "mcp": {
+      "name": "MCP Tools",
+      "desc": "Connect to Model Context Protocol servers for extended capabilities"
+    },
+    "code-interpreter": {
+      "name": "Code Interpreter",
+      "desc": "Run and analyze code snippets in Python, JavaScript, and more"
+    },
+    "rag": {
+      "name": "Knowledge Retrieval",
+      "desc": "Search and reference documents from your knowledge base"
+    }
+  }
+}
