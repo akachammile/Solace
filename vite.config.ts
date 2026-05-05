@@ -21,9 +21,23 @@ export default defineConfig({
           delete process.env.ELECTRON_RUN_AS_NODE
           return startup(undefined, { env })
         },
+        vite: {
+          resolve: {
+            alias: {
+              '@shared': path.resolve(__dirname, 'src/shared'),
+            },
+          },
+        },
       },
       preload: {
         input: path.join(__dirname, 'src/preload/preload.ts'),
+        vite: {
+          resolve: {
+            alias: {
+              '@shared': path.resolve(__dirname, 'src/shared'),
+            },
+          },
+        },
       },
       renderer: process.env.NODE_ENV === 'test' ? undefined : {},
     }),
