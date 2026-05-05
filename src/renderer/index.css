@@ -1,6 +1,7 @@
 :root {
   font-family:
-    'Inter', 'Segoe UI Variable Text', 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter',
+    'Segoe UI Variable Text', 'Segoe UI', 'PingFang SC', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 450;
   color: var(--color-text);
@@ -10,19 +11,23 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --color-bg: #EEF1F3;
+  --color-bg: #F5F5F7;
   --color-bg-elevated: #FFFFFF;
-  --color-surface: #F8F9F7;
-  --color-sidebar: #E8EEEC;
-  --color-border: #DDE3E0;
-  --color-text: #212121;
-  --color-text-muted: #68716E;
-  --color-accent: #2F7D6D;
-  --color-accent-strong: #246756;
-  --color-accent-soft: rgba(47, 125, 109, 0.1);
-  --color-success: #45826A;
-  --color-warning: #E29A32;
-  --color-danger: #B9443D;
+  --color-surface: #FBFBFD;
+  --color-sidebar: #F7F7FA;
+  --color-border: #E5E5EA;
+  --color-text: #1D1D1F;
+  --color-text-muted: #86868B;
+  --color-accent: #0071E3;
+  --color-accent-strong: #0057B8;
+  --color-accent-soft: rgba(0, 113, 227, 0.1);
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --semantic-mindful: #2563FF;
+  --semantic-creative: #8B5CF6;
+  --semantic-terminal: #10B981;
+  --semantic-connective: #F59E0B;
 
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -34,10 +39,10 @@
   --radius-lg: 18px;
   --radius-xl: 24px;
 
-  --top-rail-height: 48px;
+  --top-rail-height: 44px;
   --rail-width: 48px;
-  --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-medium: 0 12px 24px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.02);
+  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 18px 42px rgba(0, 0, 0, 0.08), 0 6px 18px rgba(0, 0, 0, 0.05);
   --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -48,6 +53,8 @@
 html,
 body,
 #root {
+  width: 100%;
+  height: 100%;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -92,10 +99,10 @@ textarea {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c4c9c7;
+  background: #CBD5E1;
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a0a6a4;
+  background: #94A3B8;
 }
