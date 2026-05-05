@@ -1,0 +1,56 @@
+.golden-ratio-layout {
+  --panel-min-width: 240px;
+  --gap: 16px;
+  
+  flex: 1;
+  display: grid;
+  /* Proportions approx 1 : 1.618 : 1 */
+  grid-template-columns: minmax(var(--panel-min-width), 1fr) minmax(420px, 1.618fr) minmax(var(--panel-min-width), 1fr);
+  gap: var(--gap);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  padding: var(--gap);
+  box-sizing: border-box;
+}
+
+.golden-ratio-layout__left,
+.golden-ratio-layout__main,
+.golden-ratio-layout__right {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 12px;
+  background: var(--color-bg-elevated);
+  /* Lighter visual style: remove heavy borders, use a very soft shadow if needed, or rely on gap */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  /* border: 1px solid rgba(0,0,0,0.03); */
+  overflow: hidden;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1120px) {
+  .golden-ratio-layout {
+    grid-template-columns: minmax(200px, 1fr) minmax(380px, 1.618fr) minmax(240px, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .golden-ratio-layout {
+    grid-template-columns: minmax(200px, 1fr) minmax(380px, 1.618fr);
+  }
+  .golden-ratio-layout__right {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .golden-ratio-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .golden-ratio-layout__left {
+    /* Or handle differently on mobile */
+  }
+}
