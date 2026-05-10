@@ -1,19 +1,177 @@
 .app-shell {
   width: 100vw;
   height: 100vh;
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
-  display: grid;
-  grid-template-rows: var(--top-rail-height) minmax(0, 1fr);
-  background: var(--color-bg);
-}
-
-.page-content {
-  min-width: 0;
-  min-height: 0;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   background: var(--color-bg);
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nexus Labs TopAppBar Styles */
+.app-topbar {
+  height: var(--top-rail-height);
+  background: rgba(11, 20, 30, 0.4);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(59, 73, 75, 0.2);
+  display: flex;
+  align-items: center;
+  padding-right: var(--margin);
+  -webkit-app-region: drag;
+  z-index: 50;
+  flex-shrink: 0;
+}
+
+.sidebar-toggle-area {
+  width: var(--sidebar-width);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-right: 1px solid rgba(59, 73, 75, 0.3);
+  flex-shrink: 0;
+}
+
+.topbar-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 24px;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  position: relative;
+  text-decoration: none;
+  transition: color 0.2s;
+  -webkit-app-region: no-drag;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--color-primary);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--color-primary);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.start-experiment-btn {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  -webkit-app-region: no-drag;
+}
+
+.start-experiment-btn:hover {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: rgba(0, 240, 255, 0.3);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 1px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.window-controls-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-left: 1px solid rgba(59, 73, 75, 0.3);
+  padding-left: 16px;
+  margin-left: 16px;
+}
+
+.control-group {
+  display: flex;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.control-dot.close { background: rgba(255, 180, 171, 0.4); }
+.control-dot.min { background: rgba(198, 198, 202, 0.4); }
+.control-dot.max { background: rgba(0, 240, 255, 0.4); }
+
+.control-dot.close:hover { background: #ffb4ab; }
+.control-dot.min:hover { background: #c6c6ca; }
+.control-dot.max:hover { background: #00f0ff; }
+
+.utility-btns {
+  display: flex;
+  gap: 8px;
+  -webkit-app-region: no-drag;
+}
+
+.utility-btn {
+  color: var(--color-text-dim);
+  transition: all 0.2s;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.utility-btn:hover {
+  color: var(--color-primary);
+  background: rgba(0, 240, 255, 0.05);
 }
