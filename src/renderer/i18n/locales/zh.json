@@ -65,6 +65,8 @@
     }
   },
   "chat": {
+    "placeholder": "有什么？",
+    "emptyState": "有什么？",
     "agentNotRunning": "代理未运行...",
     "typeMessage": "输入消息...",
     "clearContext": "清除上下文",

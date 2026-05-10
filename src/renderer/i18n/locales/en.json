@@ -65,6 +65,8 @@
     }
   },
   "chat": {
+    "placeholder": "What's up?",
+    "emptyState": "What's up?",
     "agentNotRunning": "Agent is not running...",
     "typeMessage": "Type a message...",
     "clearContext": "Clear context",

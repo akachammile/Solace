@@ -1,37 +1,63 @@
-import { Settings } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { closeWindow, minimizeWindow, toggleMaximizeWindow } from '@/services/electron/window'
 
-interface AppTopBarProps {
-  title: string
-  onOpenHome: () => void
-  onOpenSettings: () => void
-}
-
-export function AppTopBar({ title, onOpenHome, onOpenSettings }: AppTopBarProps) {
+export function AppTopBar() {
   const { t } = useTranslation()
 
   return (
-    <header className="bc-topbar">
-      <div className="bc-window-dots">
-        <button aria-label={t('shell.close')} className="bc-window-dot bc-window-dot--close" onClick={() => void closeWindow()} type="button" />
-        <button aria-label={t('shell.minimize')} className="bc-window-dot bc-window-dot--min" onClick={() => void minimizeWindow()} type="button" />
-        <button aria-label={t('shell.maximize')} className="bc-window-dot bc-window-dot--max" onClick={() => void toggleMaximizeWindow()} type="button" />
+    <header className="app-topbar sharp">
+      <div className="sidebar-toggle-area">
+        <button className="utility-btn">
+          <span className="material-symbols-outlined">side_navigation</span>
+        </button>
       </div>
 
-      <button className="bc-topbar__title" onClick={onOpenHome} type="button">
-        {title}
-      </button>
+      <div className="topbar-content">
+        <nav className="nav-links">
+          <a href="#" className="nav-link active">Thought Path</a>
+          <a href="#" className="nav-link">Trace</a>
+          <a href="#" className="nav-link">Synthesis</a>
+        </nav>
 
-      <button
-        aria-label={t('nav.settings')}
-        className="bc-topbar__settings"
-        onClick={onOpenSettings}
-        title={t('nav.settings')}
-        type="button"
-      >
-        <Settings size={18} />
-      </button>
+        <div className="topbar-actions">
+          <button className="start-experiment-btn sharp">
+            <div className="status-dot"></div>
+            START EXPERIMENT
+          </button>
+
+          <div className="utility-btns">
+            <button className="utility-btn">
+              <span className="material-symbols-outlined">account_tree</span>
+            </button>
+            <button className="utility-btn">
+              <span className="material-symbols-outlined">sensors</span>
+            </button>
+            <button className="utility-btn">
+              <span className="material-symbols-outlined">terminal</span>
+            </button>
+          </div>
+
+          <div className="window-controls-container">
+            <div className="control-group">
+              <button 
+                className="control-dot min" 
+                onClick={() => void minimizeWindow()} 
+                aria-label={t('shell.minimize')}
+              />
+              <button 
+                className="control-dot max" 
+                onClick={() => void toggleMaximizeWindow()} 
+                aria-label={t('shell.maximize')}
+              />
+              <button 
+                className="control-dot close" 
+                onClick={() => void closeWindow()} 
+                aria-label={t('shell.close')}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
   )
 }
