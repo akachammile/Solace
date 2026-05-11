@@ -1,10 +1,9 @@
-import './ContextSidebar.css'
-
 interface ContextSidebarProps {
   onNewSession: () => void
+  onOpenSettings: () => void
 }
 
-export function ContextSidebar({ onNewSession }: ContextSidebarProps) {
+export function ContextSidebar({ onNewSession, onOpenSettings }: ContextSidebarProps) {
   return (
     <aside className="context-sidebar sharp">
       <button className="new-experiment-btn sharp" onClick={onNewSession}>
@@ -28,14 +27,19 @@ export function ContextSidebar({ onNewSession }: ContextSidebarProps) {
               <span className="material-symbols-outlined">inventory_2</span>
               Lab Archives
             </a>
-            <a href="#" className="nav-item">
+            <button 
+              className="nav-item"
+              onClick={(e) => {
+                e.preventDefault()
+                onOpenSettings()
+              }}
+            >
               <span className="material-symbols-outlined">settings</span>
               Settings
-            </a>
+            </button>
           </nav>
         </section>
       </div>
-
       <footer className="sidebar-footer">
         <a href="#" className="nav-item">
           <span className="material-symbols-outlined">terminal</span>

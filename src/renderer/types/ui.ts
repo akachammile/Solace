@@ -1,1 +1,1 @@
-export type ModelProvider = 'openai' | 'anthropic' | 'gemini' | 'deepseek' | 'zhipu'
+export type ModelProvider = 'openai' | 'anthropic' | 'gemini' | 'deepseek' | 'zhipu' | 'custom'

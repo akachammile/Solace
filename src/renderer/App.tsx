@@ -3,7 +3,6 @@ import { AppTopBar } from '@/pages/bionic-console/components/AppTopBar'
 import { ContextSidebar } from '@/components/sidebar/ContextSidebar'
 import { WorkbenchPage } from '@/pages/workbench/WorkbenchPage'
 import { SettingsOverlay } from '@/components/settings/SettingsOverlay'
-import './App.css'
 
 function AppContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -13,7 +12,10 @@ function AppContent() {
     <div className="app-shell">
       <AppTopBar />
       <div className="app-main">
-        <ContextSidebar onNewSession={() => setViewState('welcome')} />
+        <ContextSidebar 
+          onNewSession={() => setViewState('welcome')} 
+          onOpenSettings={() => setIsSettingsOpen(true)}
+        />
         <main className="page-content">
           <WorkbenchPage 
             viewState={viewState} 
