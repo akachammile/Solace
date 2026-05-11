@@ -3,43 +3,48 @@ import path from 'node:path'
 import electron from 'vite-plugin-electron/simple'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src/renderer'),
-      '@shared': path.resolve(__dirname, 'src/shared'),
+export default defineConfig(async () => {
+  const { default: tailwindcss } = await import('@tailwindcss/vite')
+
+  return {
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src/renderer'),
+        '@shared': path.resolve(__dirname, 'src/shared'),
+      },
     },
-  },
-  plugins: [
-    react(),
-    electron({
-      main: {
-        entry: 'src/main/main.ts',
-        onstart: ({ startup }) => {
-          const env = { ...process.env }
-          delete env.ELECTRON_RUN_AS_NODE
-          delete process.env.ELECTRON_RUN_AS_NODE
-          return startup(undefined, { env })
-        },
-        vite: {
-          resolve: {
-            alias: {
-              '@shared': path.resolve(__dirname, 'src/shared'),
+    plugins: [
+      tailwindcss(),
+      react(),
+      electron({
+        main: {
+          entry: 'src/main/main.ts',
+          onstart: ({ startup }) => {
+            const env = { ...process.env }
+            delete env.ELECTRON_RUN_AS_NODE
+            delete process.env.ELECTRON_RUN_AS_NODE
+            return startup(undefined, { env })
+          },
+          vite: {
+            resolve: {
+              alias: {
+                '@shared': path.resolve(__dirname, 'src/shared'),
+              },
             },
           },
         },
-      },
-      preload: {
-        input: path.join(__dirname, 'src/preload/preload.ts'),
-        vite: {
-          resolve: {
-            alias: {
-              '@shared': path.resolve(__dirname, 'src/shared'),
+        preload: {
+          input: path.join(__dirname, 'src/preload/preload.ts'),
+          vite: {
+            resolve: {
+              alias: {
+                '@shared': path.resolve(__dirname, 'src/shared'),
+              },
             },
           },
         },
-      },
-      renderer: process.env.NODE_ENV === 'test' ? undefined : {},
-    }),
-  ],
+        renderer: process.env.NODE_ENV === 'test' ? undefined : {},
+      }),
+    ],
+  }
 })
