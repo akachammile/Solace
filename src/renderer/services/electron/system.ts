@@ -1,4 +1,4 @@
-import type { AppInfo, TestConnectionResult } from '@shared/types/ipc'
+import type { AppInfo, ModelServiceProvider, TestConnectionResult } from '@shared/types/ipc'
 
 export function getAppInfo(): Promise<AppInfo> {
   return window.solace.system.getAppInfo()
@@ -17,6 +17,7 @@ export function testConnection(
   apiKey: string,
   authHeader: string,
   testEndpoint: string,
+  provider?: ModelServiceProvider,
 ): Promise<TestConnectionResult> {
-  return window.solace.system.testConnection(baseUrl, apiKey, authHeader, testEndpoint)
+  return window.solace.system.testConnection(baseUrl, apiKey, authHeader, testEndpoint, provider)
 }
