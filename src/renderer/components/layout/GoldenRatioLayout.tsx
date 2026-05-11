@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import './GoldenRatioLayout.css'
 
 interface GoldenRatioLayoutProps {
   leftPanel?: ReactNode

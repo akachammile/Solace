@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Send, Paperclip } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import './ChatPage.css'
 
 export function ChatPage() {
   const { t } = useTranslation()

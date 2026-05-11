@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Send, Paperclip } from 'lucide-react'
-import './WorkbenchPage.css'
 
 interface WorkbenchPageProps {
   viewState: 'welcome' | 'chat'
