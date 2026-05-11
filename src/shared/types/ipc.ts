@@ -14,11 +14,19 @@ export interface TestConnectionResult {
   error?: string
 }
 
+export type ModelServiceProvider = 'openai' | 'anthropic' | 'gemini' | 'deepseek' | 'zhipu' | 'custom'
+
 export interface SystemApi {
   getAppInfo: () => Promise<AppInfo>
   ping: () => Promise<string>
   selectDirectory: () => Promise<string | null>
-  testConnection: (baseUrl: string, apiKey: string, authHeader: string, testEndpoint: string) => Promise<TestConnectionResult>
+  testConnection: (
+    baseUrl: string,
+    apiKey: string,
+    authHeader: string,
+    testEndpoint: string,
+    provider?: ModelServiceProvider,
+  ) => Promise<TestConnectionResult>
 }
 
 export interface WindowApi {

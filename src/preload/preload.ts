@@ -6,8 +6,8 @@ const systemApi: SystemApi = {
   getAppInfo: () => ipcRenderer.invoke(IPC_CHANNELS.system.getAppInfo),
   ping: () => ipcRenderer.invoke(IPC_CHANNELS.system.ping),
   selectDirectory: () => ipcRenderer.invoke(IPC_CHANNELS.system.selectDirectory),
-  testConnection: (baseUrl, apiKey, authHeader, testEndpoint) =>
-    ipcRenderer.invoke(IPC_CHANNELS.system.testConnection, baseUrl, apiKey, authHeader, testEndpoint),
+  testConnection: (baseUrl, apiKey, authHeader, testEndpoint, provider) =>
+    ipcRenderer.invoke(IPC_CHANNELS.system.testConnection, baseUrl, apiKey, authHeader, testEndpoint, provider),
 }
 
 const windowApi: WindowApi = {

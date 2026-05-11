@@ -2,8 +2,10 @@ import { app, BrowserWindow, dialog, ipcMain, screen, type OpenDialogOptions, ty
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
+import type { ModelServiceProvider, TestConnectionResult } from '@shared/types/ipc'
 import { registerAcpHandlers } from './acp/handlers'
 import { acpManager } from './acp/manager'
+import { testAnthropicConnection } from './services/anthropic'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -18,6 +20,47 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 let win: BrowserWindow | null
 let dimOverlayWindows: BrowserWindow[] = []
 
+function isAnthropicConnection(
+  baseUrl: string,
+  authHeader: string,
+  testEndpoint: string,
+  provider?: ModelServiceProvider,
+) {
+  return (
+    provider === 'anthropic' ||
+    baseUrl.toLowerCase().includes('anthropic') ||
+    (authHeader === 'x-api-key' && testEndpoint === '/v1/messages')
+  )
+}
+
+async function testHttpConnection(
+  baseUrl: string,
+  apiKey: string,
+  authHeader: string,
+  testEndpoint: string,
+): Promise<TestConnectionResult> {
+  const url = `${baseUrl}${testEndpoint}`
+  const headers: Record<string, string> = {}
+  if (authHeader === 'Bearer') {
+    headers['Authorization'] = `Bearer ${apiKey}`
+  } else if (authHeader === 'x-api-key') {
+    headers['x-api-key'] = apiKey
+  } else if (authHeader === 'x-goog-api-key') {
+    headers['x-goog-api-key'] = apiKey
+  }
+
+  const start = Date.now()
+  try {
+    const response = await fetch(url, { headers, signal: AbortSignal.timeout(10_000) })
+    const latency = Date.now() - start
+    return { ok: response.ok, status: response.status, latency }
+  } catch (err) {
+    const latency = Date.now() - start
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    return { ok: false, status: 0, latency, error: message }
+  }
+}
+
 function registerIpcHandlers() {
   ipcMain.handle(IPC_CHANNELS.system.getAppInfo, () => ({
     appName: app.getName(),
@@ -30,27 +73,19 @@ function registerIpcHandlers() {
 
   ipcMain.handle(IPC_CHANNELS.system.ping, () => 'pong from main')
 
-  ipcMain.handle(IPC_CHANNELS.system.testConnection, async (_event, baseUrl: string, apiKey: string, authHeader: string, testEndpoint: string) => {
-    const url = `${baseUrl}${testEndpoint}`
-    const headers: Record<string, string> = {}
-    if (authHeader === 'Bearer') {
-      headers['Authorization'] = `Bearer ${apiKey}`
-    } else if (authHeader === 'x-api-key') {
-      headers['x-api-key'] = apiKey
-    } else if (authHeader === 'x-goog-api-key') {
-      headers['x-goog-api-key'] = apiKey
+  ipcMain.handle(IPC_CHANNELS.system.testConnection, async (
+    _event,
+    baseUrl: string,
+    apiKey: string,
+    authHeader: string,
+    testEndpoint: string,
+    provider?: ModelServiceProvider,
+  ) => {
+    if (isAnthropicConnection(baseUrl, authHeader, testEndpoint, provider)) {
+      return testAnthropicConnection(baseUrl, apiKey)
     }
 
-    const start = Date.now()
-    try {
-      const response = await fetch(url, { headers, signal: AbortSignal.timeout(10_000) })
-      const latency = Date.now() - start
-      return { ok: response.ok, status: response.status, latency }
-    } catch (err) {
-      const latency = Date.now() - start
-      const message = err instanceof Error ? err.message : 'Unknown error'
-      return { ok: false, status: 0, latency, error: message }
-    }
+    return testHttpConnection(baseUrl, apiKey, authHeader, testEndpoint)
   })
 
   ipcMain.handle(IPC_CHANNELS.system.selectDirectory, async () => {
