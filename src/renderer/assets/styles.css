@@ -106,7 +106,7 @@
   }
 
   .app-topbar {
-    @apply z-50 flex shrink-0 items-center border-b pr-[var(--margin)] backdrop-blur-xl;
+    @apply z-50 flex shrink-0 items-center border-b pr-3 backdrop-blur-xl;
     height: var(--top-rail-height);
     background: rgba(255, 255, 255, 0.7);
     border-color: var(--color-border);
@@ -120,7 +120,7 @@
   }
 
   .topbar-content {
-    @apply flex flex-1 items-center justify-between pl-6;
+    @apply flex h-full flex-1 items-center justify-between pl-6;
   }
 
   .nav-links,
@@ -140,14 +140,21 @@
     @apply gap-4;
   }
 
-  .window-controls-container {
-    @apply ml-4 border-l pl-4;
-    border-color: var(--color-border);
+  .topbar-actions {
+    @apply h-full;
   }
 
-  .utility-btns,
-  .control-group {
+  .window-controls-container {
+    @apply ml-1 h-full;
+  }
+
+  .utility-btns {
     @apply gap-2;
+    -webkit-app-region: no-drag;
+  }
+
+  .control-group {
+    @apply h-full gap-2;
     -webkit-app-region: no-drag;
   }
 
@@ -200,32 +207,20 @@
     background: var(--color-primary);
   }
 
-  .control-dot {
-    @apply h-2.5 w-2.5 cursor-pointer rounded-full transition-colors;
+  .window-control-button {
+    @apply grid h-7 w-7 cursor-pointer place-items-center rounded p-1 transition-all;
+    color: var(--color-text-dim);
+    -webkit-app-region: no-drag;
   }
 
-  .control-dot.close {
-    background: rgba(239, 68, 68, 0.4);
+  .window-control-button:hover {
+    background: var(--color-primary-container);
+    color: var(--color-primary);
   }
 
-  .control-dot.min {
-    background: rgba(148, 163, 184, 0.4);
-  }
-
-  .control-dot.max {
-    background: rgba(37, 99, 235, 0.4);
-  }
-
-  .control-dot.close:hover {
-    @apply bg-red-500;
-  }
-
-  .control-dot.min:hover {
-    @apply bg-slate-400;
-  }
-
-  .control-dot.max:hover {
-    @apply bg-blue-600;
+  .window-control-button--close:hover {
+    background: var(--color-primary-container);
+    color: var(--color-primary);
   }
 
   .utility-btn {
@@ -400,24 +395,98 @@
   }
 
   .chat-bottom-area {
-    @apply px-10 pb-10 pt-6;
+    @apply flex justify-center px-10 pb-10 pt-6;
   }
 
   .chat-input-capsule {
-    @apply flex w-full items-center gap-4 border-b px-4 py-3 transition-all;
-    background: var(--color-surface-container);
-    border-bottom-color: var(--color-primary);
+    @apply flex w-full max-w-[920px] flex-col overflow-hidden rounded-2xl border shadow-lg transition-all;
+    background: rgba(255, 255, 255, 0.92);
+    border-color: #d9e2ef;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+  }
+
+  .chat-input-capsule:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary) 34%, #d9e2ef);
+    box-shadow: 0 20px 48px rgba(37, 99, 235, 0.12);
   }
 
   .chat-tool-btn,
   .chat-send-btn {
-    @apply grid h-10 w-10 place-items-center transition-colors;
+    @apply grid h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-lg transition-all;
+    color: var(--color-text-muted);
+  }
+
+  .chat-tool-btn:hover,
+  .chat-send-btn:hover:not(:disabled) {
+    background: var(--color-primary-container);
     color: var(--color-primary);
   }
 
+  .chat-send-btn {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .chat-send-btn:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.16);
+  }
+
+  .chat-send-btn:disabled {
+    @apply cursor-not-allowed opacity-40;
+    background: #e2e8f0;
+    color: var(--color-text-muted);
+  }
+
   .chat-textarea {
-    @apply min-h-11 flex-1 resize-none font-body text-base;
+    @apply min-h-[92px] w-full resize-none px-5 py-4 font-body text-base leading-6;
+    background: transparent;
     color: var(--color-text);
+  }
+
+  .chat-textarea::placeholder {
+    color: #94a3b8;
+  }
+
+  .chat-input-toolbar {
+    @apply flex min-h-[54px] items-center justify-between gap-3 border-t px-3 py-2;
+    background: #f8fafc;
+    border-color: #e2e8f0;
+  }
+
+  .chat-input-tools,
+  .chat-input-actions {
+    @apply flex min-w-0 items-center gap-2;
+  }
+
+  .chat-input-tools {
+    @apply flex-1 flex-wrap justify-center;
+  }
+
+  .chat-input-actions {
+    @apply shrink-0;
+  }
+
+  .chat-tool-chip {
+    @apply inline-flex h-9 max-w-full cursor-pointer items-center gap-2 rounded-lg border px-3 text-sm font-semibold transition-all;
+    background: var(--color-bg-elevated);
+    border-color: #dbe4f0;
+    color: var(--color-text-muted);
+  }
+
+  .chat-tool-chip span {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .chat-tool-chip:hover,
+  .chat-tool-chip--model {
+    border-color: color-mix(in srgb, var(--color-primary) 24%, #dbe4f0);
+    color: var(--color-primary);
+  }
+
+  .chat-tool-chip--model {
+    background: #f2f6ff;
   }
 
   .chat-page__messages {
@@ -492,210 +561,600 @@
   }
 
   .settings-overlay-backdrop {
-    @apply absolute inset-0 z-[9999] flex items-center justify-center p-10 backdrop-blur;
-    background: rgba(0, 0, 0, 0.4);
+    @apply absolute inset-0 z-[9999] flex justify-center overflow-hidden backdrop-blur;
+    align-items: stretch;
+    background: rgba(15, 23, 42, 0.28);
+    padding: clamp(8px, 2vh, 20px) clamp(8px, 2vw, 24px);
   }
 
   .settings-overlay-container {
-    @apply flex h-full max-h-[600px] w-full max-w-[900px] flex-col overflow-hidden rounded-xl border shadow-2xl;
-    background: var(--color-bg-elevated);
+    @apply flex min-h-0 w-full max-w-[1120px] flex-col overflow-hidden rounded-lg border;
+    background: rgba(255, 255, 255, 0.94);
     border-color: var(--color-border);
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.16);
+    height: min(742px, calc(100vh - 32px));
+    max-height: calc(100vh - 16px);
   }
 
   .settings-header {
-    @apply flex h-14 items-center justify-between border-b px-6;
-    background: var(--color-surface);
+    @apply flex min-h-14 shrink-0 items-center justify-end border-b px-5;
+    background: rgba(255, 255, 255, 0.74);
     border-color: var(--color-border);
   }
 
-  .settings-header h2 {
-    @apply text-base font-semibold;
-    color: var(--color-text);
+  .settings-panel-label {
+    @apply font-mono text-[11px] font-extrabold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.18em;
   }
 
-  .settings-close-button {
-    @apply grid h-8 w-8 cursor-pointer place-items-center rounded-md transition-colors;
+  .settings-close-button,
+  .settings-icon-button,
+  .settings-action-button {
+    @apply cursor-pointer border transition-all;
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
     color: var(--color-text-muted);
+    -webkit-app-region: no-drag;
   }
 
-  .settings-close-button:hover {
-    background: var(--color-border);
-    color: var(--color-text);
+  .settings-close-button,
+  .settings-icon-button {
+    @apply grid h-9 w-9 shrink-0 place-items-center rounded-lg;
+  }
+
+  .settings-close-button:hover,
+  .settings-icon-button:hover,
+  .settings-action-button:hover:not(:disabled) {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+    box-shadow: var(--shadow-soft);
+    color: var(--color-primary);
   }
 
   .settings-body {
-    @apply flex min-h-0 flex-1;
+    @apply flex min-h-0 flex-1 overflow-hidden;
   }
 
   .settings-sidebar {
-    @apply flex w-60 flex-col gap-1 overflow-y-auto border-r px-3 py-4;
-    background: var(--color-bg);
+    @apply flex min-h-0 w-[252px] shrink-0 flex-col gap-2 overflow-y-auto border-r p-3;
+    background: rgba(255, 255, 255, 0.46);
     border-color: var(--color-border);
   }
 
   .settings-tab {
-    @apply flex w-full cursor-pointer items-center gap-3 rounded-lg px-3.5 py-2.5 text-left transition-all;
+    @apply grid min-h-[52px] w-full cursor-pointer grid-cols-[34px_minmax(0,1fr)] items-center gap-3 rounded-lg border px-3 text-left transition-all;
+    background: transparent;
+    border-color: transparent;
     color: var(--color-text-muted);
   }
 
   .settings-tab:hover,
   .settings-tab.active {
-    background: var(--color-surface);
-  }
-
-  .settings-tab:hover {
-    color: var(--color-text);
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-soft);
   }
 
   .settings-tab.active {
-    @apply font-semibold;
-    color: var(--color-accent);
+    color: var(--color-primary);
   }
 
   .settings-tab-icon {
-    @apply grid place-items-center;
+    @apply grid h-[34px] w-[34px] place-items-center rounded-lg;
+    background: var(--color-surface);
   }
 
-  .settings-tab-title {
-    @apply text-sm;
+  .settings-tab-copy,
+  .settings-tab-copy small,
+  .settings-tab-copy strong {
+    @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
   }
 
-  .settings-content {
-    @apply flex-1 overflow-y-auto p-8;
-    background: var(--color-bg-elevated);
+  .settings-tab-copy small {
+    @apply font-mono text-[10px] font-extrabold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.16em;
   }
 
-  .settings-content-placeholder h3,
-  .models-settings h3 {
-    @apply mb-2 mt-0 text-xl font-semibold;
+  .settings-tab-copy strong {
+    @apply mt-0.5 text-sm font-bold;
     color: var(--color-text);
   }
 
-  .settings-content-placeholder p,
-  .settings-subtitle {
-    @apply text-sm;
-    color: var(--color-text-dim);
+  .settings-tab.active .settings-tab-copy strong {
+    color: var(--color-primary);
   }
 
-  .settings-subtitle {
-    @apply mb-8;
+  .settings-content {
+    @apply flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-hidden p-5;
+    background: var(--color-bg);
   }
 
-  .providers-list {
-    @apply flex flex-col gap-5;
+  .settings-panel {
+    @apply min-h-0 rounded-lg border p-4;
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-soft);
+    overflow-y: auto;
   }
 
-  .provider-card {
-    @apply overflow-hidden rounded-xl border;
+  .settings-panel__heading {
+    @apply mb-4;
+  }
+
+  .settings-panel__heading--row {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .settings-panel__heading h3 {
+    @apply mt-1 font-display text-2xl font-semibold leading-tight;
+    color: var(--color-text);
+  }
+
+  .settings-panel__heading p {
+    @apply mt-1 max-w-[520px] text-sm;
+    color: var(--color-text-muted);
+  }
+
+  .settings-models-panel {
+    @apply flex min-h-0 flex-1 flex-col overflow-hidden;
+  }
+
+  .settings-models-layout {
+    @apply grid min-h-0 flex-1 gap-4;
+    grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1.62fr);
+  }
+
+  .settings-provider-browser,
+  .settings-provider-details {
+    @apply min-h-0 rounded-lg border;
     background: var(--color-surface);
     border-color: var(--color-border);
   }
 
-  .provider-card-header {
-    @apply flex items-center justify-between border-b px-5 py-4;
-    background: rgba(0, 0, 0, 0.02);
+  .settings-provider-browser {
+    @apply flex flex-col overflow-hidden;
+  }
+
+  .settings-provider-browser__head,
+  .settings-model-picker__head {
+    @apply flex items-center justify-between gap-3 border-b px-3.5 py-3;
     border-color: var(--color-border);
   }
 
-  .provider-info {
-    @apply flex items-center gap-3;
+  .settings-provider-browser__list {
+    @apply flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2.5;
   }
 
-  .provider-icon {
-    @apply h-6 w-6;
-  }
-
-  .provider-card-body {
-    @apply flex flex-col gap-4 p-5;
-  }
-
-  .input-group {
-    @apply flex flex-col gap-2;
-  }
-
-  .input-group label {
-    @apply text-xs font-semibold uppercase;
-    color: var(--color-text-dim);
-    letter-spacing: 0.05em;
-  }
-
-  .input-group input {
-    @apply rounded-lg border px-3.5 py-2.5 font-mono text-sm transition-all;
-    background: var(--color-bg);
-    border-color: var(--color-outline-variant);
+  .settings-provider-list-item {
+    @apply grid min-h-[54px] w-full cursor-pointer grid-cols-[32px_minmax(0,1fr)_10px] items-center gap-3 rounded-lg border px-3 text-left transition-all;
+    background: var(--color-bg-elevated);
+    border-color: transparent;
     color: var(--color-text);
   }
 
-  .input-group input:focus {
+  .settings-provider-list-item:hover,
+  .settings-provider-list-item.is-active {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .settings-provider-list-item.is-active {
+    background: #f7faff;
+  }
+
+  .settings-provider-list-item span,
+  .settings-provider-list-item strong,
+  .settings-provider-list-item small {
+    @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .settings-provider-list-item strong {
+    @apply text-sm font-bold;
+  }
+
+  .settings-provider-list-item small {
+    @apply mt-0.5 text-xs;
+    color: var(--color-text-muted);
+  }
+
+  .settings-provider-list-item i {
+    @apply h-2.5 w-2.5 rounded-full;
+    background: #d8dee8;
+  }
+
+  .settings-provider-list-item i.is-online {
+    background: var(--color-primary);
+    box-shadow: 0 0 0 4px var(--color-primary-container);
+  }
+
+  .settings-provider-details {
+    @apply flex min-h-0 flex-col gap-4 overflow-y-auto p-4;
+  }
+
+  .settings-provider-details__hero {
+    @apply flex items-center justify-between gap-4 border-b pb-4;
+    border-color: var(--color-border);
+  }
+
+  .settings-provider-details__hero .settings-provider__identity strong {
+    @apply mt-0.5 text-base;
+  }
+
+  .settings-provider-config {
+    @apply grid gap-3;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings-secret-control {
+    @apply grid min-w-0 items-center gap-1 overflow-hidden rounded-lg border p-1;
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .settings-secret-control:focus-within {
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px var(--color-primary-container);
   }
 
-  .provider-actions {
-    @apply mt-2 flex items-center gap-4;
+  .settings-field .settings-secret-control input {
+    @apply min-h-9 border-0 bg-transparent px-3;
+    box-shadow: none;
   }
 
-  .test-btn {
-    @apply flex cursor-pointer items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-all;
-    border-color: var(--color-outline-variant);
+  .settings-field .settings-secret-control input:focus {
+    box-shadow: none;
+  }
+
+  .settings-field .settings-secret-control input::placeholder {
+    font-family: var(--font-body);
+    color: #8a97aa;
+    letter-spacing: 0;
+  }
+
+  .settings-secret-icon {
+    @apply grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-md transition-colors;
+    color: var(--color-text-muted);
+  }
+
+  .settings-secret-icon:hover:not(:disabled) {
+    background: #f1f6ff;
+    color: var(--color-primary);
+  }
+
+  .settings-secret-icon:disabled {
+    @apply cursor-not-allowed opacity-35;
+  }
+
+  .settings-field--compact input {
+    @apply min-h-9 text-xs;
+  }
+
+  .settings-model-picker {
+    @apply grid gap-3;
+  }
+
+  .settings-model-picker__head {
+    @apply border-0 px-0 py-0;
+  }
+
+  .settings-model-picker__head strong {
+    @apply block text-sm;
     color: var(--color-text);
   }
 
-  .test-btn:hover:not(:disabled) {
-    background: var(--color-bg);
-    border-color: var(--color-outline);
+  .settings-model-list {
+    @apply grid min-h-0 content-start gap-3;
   }
 
-  .test-btn:disabled {
-    @apply cursor-not-allowed opacity-50;
+  .settings-model-group {
+    @apply grid gap-2 rounded-lg border p-2.5;
+    background: #fbfcff;
+    border-color: #dbe4f0;
   }
 
-  .test-result {
-    @apply flex items-center gap-1.5 text-sm font-medium;
+  .settings-model-group + .settings-model-group {
+    @apply mt-1;
   }
 
-  .test-result.success {
-    @apply text-emerald-500;
+  .settings-model-group__label {
+    @apply flex min-h-10 items-center rounded-md border px-3 font-display text-base font-semibold;
+    background: #eef4ff;
+    border-color: #d6e4ff;
+    color: #1d4ed8;
+    letter-spacing: 0;
   }
 
-  .test-result.error {
-    @apply text-red-500;
+  .settings-model-row {
+    @apply grid min-h-[64px] cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border px-3 py-2 text-left transition-all;
+    background: var(--color-bg-elevated);
+    border-color: transparent;
   }
 
-  .switch {
-    @apply relative inline-block h-6 w-11;
+  .settings-model-row:hover,
+  .settings-model-row.is-active {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+    box-shadow: var(--shadow-soft);
   }
 
-  .switch input {
+  .settings-model-row span,
+  .settings-model-row strong,
+  .settings-model-row small {
+    @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .settings-model-row strong {
+    @apply text-sm font-bold;
+    color: var(--color-text);
+  }
+
+  .settings-model-row small {
+    @apply mt-0.5 font-mono text-[11px];
+    color: var(--color-text-muted);
+  }
+
+  .settings-model-row em {
+    @apply max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap rounded-full border px-2 py-1 text-xs not-italic;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .settings-provider-list,
+  .settings-mcp-list,
+  .settings-section-grid,
+  .settings-skill-grid {
+    @apply grid gap-3;
+  }
+
+  .settings-provider {
+    @apply rounded-lg border;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .settings-provider__head,
+  .settings-mcp-server__head,
+  .settings-option-row {
+    @apply flex items-center;
+  }
+
+  .settings-provider__head {
+    @apply justify-between gap-4 border-b px-4 py-3;
+    border-color: var(--color-border);
+  }
+
+  .settings-provider__identity {
+    @apply flex min-w-0 items-center gap-3;
+  }
+
+  .settings-provider__icon {
+    @apply h-7 w-7 shrink-0;
+  }
+
+  .settings-provider__monogram {
+    @apply grid place-items-center rounded-lg font-mono text-[11px] font-extrabold;
+    background: var(--color-primary-container);
+    color: var(--color-primary);
+  }
+
+  .settings-provider__identity strong,
+  .settings-provider__identity small {
+    @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .settings-provider__identity strong {
+    @apply text-sm font-bold;
+    color: var(--color-text);
+  }
+
+  .settings-provider__identity small {
+    @apply font-mono text-[11px] uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .settings-provider__body {
+    @apply grid gap-3 p-4;
+  }
+
+  .settings-field {
+    @apply flex min-w-0 flex-col gap-2;
+  }
+
+  .settings-field span {
+    @apply font-mono text-[11px] font-extrabold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .settings-field input,
+  .settings-field textarea {
+    @apply min-h-10 min-w-0 rounded-lg border px-3 font-mono text-sm transition-all;
+    background: #f8fafc;
+    border-color: #d8dee8;
+    color: var(--color-text);
+  }
+
+  .settings-field input::placeholder,
+  .settings-field textarea::placeholder {
+    color: #a3adbc;
+  }
+
+  .settings-field input:focus,
+  .settings-field textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-container);
+  }
+
+  .settings-action-button {
+    @apply inline-flex min-h-9 items-center justify-center gap-2 rounded-lg px-3 text-sm font-bold;
+  }
+
+  .settings-action-button--primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .settings-action-button--primary:hover:not(:disabled) {
+    color: var(--color-on-primary);
+    box-shadow: 0 16px 30px rgba(37, 99, 235, 0.14);
+  }
+
+  .settings-action-button:disabled {
+    @apply cursor-not-allowed opacity-45;
+  }
+
+  .settings-test-result {
+    @apply inline-flex min-h-8 max-w-full items-center gap-1.5 overflow-hidden text-ellipsis rounded-lg border px-2.5 text-sm font-bold;
+  }
+
+  .settings-test-result.is-success {
+    background: #ecfdf5;
+    border-color: #bbf7d0;
+    color: #059669;
+  }
+
+  .settings-test-result.is-error {
+    background: #fef2f2;
+    border-color: #fecaca;
+    color: #dc2626;
+  }
+
+  .settings-switch {
+    @apply relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center;
+  }
+
+  .settings-switch input {
     @apply h-0 w-0 opacity-0;
   }
 
-  .slider {
-    @apply absolute inset-0 cursor-pointer transition-all;
+  .settings-switch span {
+    @apply absolute inset-0 rounded-full transition-all;
     background: var(--color-outline-variant);
   }
 
-  .slider::before {
-    @apply absolute h-[18px] w-[18px] bg-white transition-all;
+  .settings-switch span::before {
+    @apply absolute h-[18px] w-[18px] rounded-full bg-white transition-all;
     bottom: 3px;
     left: 3px;
     content: "";
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
   }
 
-  input:checked + .slider {
+  .settings-switch input:checked + span {
     background: var(--color-primary);
   }
 
-  input:checked + .slider::before {
+  .settings-switch input:checked + span::before {
     @apply translate-x-5;
   }
 
-  .slider.round {
-    @apply rounded-3xl;
+  .settings-section-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 
-  .slider.round::before {
-    @apply rounded-full;
+  .settings-block,
+  .settings-mcp-server,
+  .settings-empty-state,
+  .settings-signal-card {
+    @apply rounded-lg border p-4;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .settings-block {
+    @apply grid gap-4;
+  }
+
+  .settings-form-grid {
+    @apply grid gap-3;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .settings-inline-field {
+    @apply grid min-w-0 gap-2;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .settings-option-row {
+    @apply min-h-[70px] grid-cols-[40px_minmax(0,1fr)_auto] gap-3 rounded-lg border p-3;
+    display: grid;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .settings-option-row__icon,
+  .settings-signal-card > svg {
+    @apply grid h-10 w-10 shrink-0 place-items-center rounded-lg;
+    background: #f2f6ff;
+    color: var(--color-primary);
+  }
+
+  .settings-option-row strong,
+  .settings-option-row small,
+  .settings-signal-card strong,
+  .settings-signal-card small {
+    @apply block min-w-0;
+  }
+
+  .settings-option-row strong,
+  .settings-signal-card strong {
+    @apply text-sm font-bold;
+    color: var(--color-text);
+  }
+
+  .settings-option-row small,
+  .settings-signal-card small {
+    @apply mt-1 text-xs leading-5;
+    color: var(--color-text-muted);
+  }
+
+  .settings-signal-card {
+    @apply flex items-center gap-3;
+    background: #f7faff;
+    border-color: #dde8ff;
+  }
+
+  .settings-mcp-list {
+    @apply grid-cols-1;
+  }
+
+  .settings-mcp-server {
+    @apply grid gap-3;
+  }
+
+  .settings-mcp-server__head {
+    @apply justify-between gap-3;
+  }
+
+  .settings-empty-state {
+    @apply grid min-h-[180px] place-items-center text-center;
+    color: var(--color-text-muted);
+  }
+
+  .settings-empty-state svg {
+    color: var(--color-primary);
+  }
+
+  .settings-empty-state strong {
+    @apply mt-3 text-base;
+    color: var(--color-text);
+  }
+
+  .settings-empty-state small {
+    @apply mt-1 text-sm;
+    color: var(--color-text-muted);
+  }
+
+  .settings-skill-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .settings-option-row--skill {
+    @apply min-h-[108px] items-start;
   }
 
   .golden-ratio-layout {
@@ -1319,6 +1778,44 @@
     }
   }
 
+  @media (max-height: 640px) {
+    .settings-overlay-backdrop {
+      padding: 6px 10px;
+    }
+
+    .settings-overlay-container {
+      height: calc(100vh - 12px);
+      max-height: calc(100vh - 12px);
+    }
+
+    .settings-header {
+      @apply min-h-14 px-4;
+    }
+
+    .settings-header .settings-panel-label {
+      @apply hidden;
+    }
+
+    .settings-content,
+    .settings-provider-details,
+    .settings-panel {
+      @apply p-3;
+    }
+
+    .settings-provider-details {
+      @apply gap-3;
+    }
+
+    .settings-provider-details__hero {
+      @apply pb-3;
+    }
+
+    .settings-provider-list-item,
+    .settings-model-row {
+      @apply min-h-14;
+    }
+  }
+
   @media (max-width: 1120px) {
     .golden-ratio-layout {
       grid-template-columns: minmax(200px, 1fr) minmax(380px, 1.618fr) minmax(240px, 1fr);
@@ -1341,6 +1838,25 @@
     .golden-ratio-layout__right {
       @apply hidden;
     }
+
+    .settings-overlay-backdrop {
+      @apply p-4;
+    }
+
+    .settings-sidebar {
+      @apply w-[216px];
+    }
+
+    .settings-form-grid,
+    .settings-skill-grid {
+      @apply grid-cols-1;
+    }
+
+    .settings-models-layout,
+    .settings-provider-config {
+      @apply grid-cols-1;
+    }
+
   }
 
   @media (max-width: 760px) {
@@ -1377,6 +1893,62 @@
 
     .bc-button {
       @apply min-w-0 flex-[1_1_154px];
+    }
+
+    .settings-overlay-backdrop {
+      @apply p-2;
+    }
+
+    .settings-body {
+      @apply flex-col;
+    }
+
+    .settings-sidebar {
+      @apply w-full flex-row overflow-x-auto overflow-y-hidden border-b border-r-0;
+    }
+
+    .settings-tab {
+      @apply min-w-[150px];
+    }
+
+    .settings-content {
+      @apply p-3;
+    }
+
+    .settings-panel__heading--row {
+      @apply flex-col;
+    }
+
+    .settings-provider__head {
+      @apply items-start;
+    }
+
+    .settings-provider-details__hero {
+      @apply items-start;
+    }
+
+    .settings-option-row {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+
+    .settings-option-row .settings-switch {
+      @apply col-start-2;
+    }
+
+    .settings-model-row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .settings-model-row em {
+      @apply max-w-full;
+    }
+
+    .settings-secret-control {
+      @apply grid-cols-1;
+    }
+
+    .settings-secret-icon {
+      @apply w-full;
     }
   }
 }

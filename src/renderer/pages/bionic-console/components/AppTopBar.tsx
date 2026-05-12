@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next'
+import { Minus, Square, X } from 'lucide-react'
 import { closeWindow, minimizeWindow, toggleMaximizeWindow } from '@/services/electron/window'
 
 export function AppTopBar() {
@@ -39,21 +40,30 @@ export function AppTopBar() {
 
           <div className="window-controls-container">
             <div className="control-group">
-              <button 
-                className="control-dot min" 
+              <button
+                className="window-control-button"
                 onClick={() => void minimizeWindow()} 
                 aria-label={t('shell.minimize')}
-              />
-              <button 
-                className="control-dot max" 
+                type="button"
+              >
+                <Minus size={18} strokeWidth={1.8} />
+              </button>
+              <button
+                className="window-control-button"
                 onClick={() => void toggleMaximizeWindow()} 
                 aria-label={t('shell.maximize')}
-              />
-              <button 
-                className="control-dot close" 
+                type="button"
+              >
+                <Square size={15} strokeWidth={1.8} />
+              </button>
+              <button
+                className="window-control-button window-control-button--close"
                 onClick={() => void closeWindow()} 
                 aria-label={t('shell.close')}
-              />
+                type="button"
+              >
+                <X size={18} strokeWidth={1.8} />
+              </button>
             </div>
           </div>
         </div>

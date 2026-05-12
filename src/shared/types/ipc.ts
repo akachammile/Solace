@@ -14,7 +14,7 @@ export interface TestConnectionResult {
   error?: string
 }
 
-export type ModelServiceProvider = 'openai' | 'anthropic' | 'gemini' | 'deepseek' | 'zhipu' | 'custom'
+export type ModelServiceProvider = string
 
 export interface SystemApi {
   getAppInfo: () => Promise<AppInfo>
