@@ -1,5 +1,14 @@
 import { useState } from 'react'
-import { Send, Paperclip } from 'lucide-react'
+import {
+  Bot,
+  ChevronDown,
+  Gauge,
+  ImagePlus,
+  Paperclip,
+  Send,
+  SlidersHorizontal,
+  Wand2,
+} from 'lucide-react'
 
 interface WorkbenchPageProps {
   viewState: 'welcome' | 'chat'
@@ -72,21 +81,54 @@ export function WorkbenchPage({ viewState, onStartChat }: WorkbenchPageProps) {
         </div>
 
         <div className="chat-bottom-area">
-          <div className="chat-input-capsule sharp">
-            <button className="chat-tool-btn">
-              <Paperclip size={18} />
-            </button>
+          <div className="chat-input-capsule">
             <textarea
               className="chat-textarea"
-              placeholder="COMMAND >"
+              placeholder="Ask, plan, or generate..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              rows={1}
+              rows={3}
             />
-            <button className="chat-send-btn" onClick={handleSend} disabled={!input.trim()}>
-              <Send size={18} />
-            </button>
+            <div className="chat-input-toolbar">
+              <div className="chat-input-tools">
+                <button className="chat-tool-chip chat-tool-chip--model" type="button">
+                  <Bot size={15} />
+                  <span>GPT-5.1</span>
+                  <ChevronDown size={14} />
+                </button>
+                <button className="chat-tool-chip" type="button">
+                  <SlidersHorizontal size={15} />
+                  <span>Scale 7.5</span>
+                </button>
+                <button className="chat-tool-chip" type="button">
+                  <Gauge size={15} />
+                  <span>H-scale 0.45</span>
+                </button>
+                <button className="chat-tool-chip" type="button">
+                  <Wand2 size={15} />
+                  <span>NPI 0.80</span>
+                </button>
+              </div>
+
+              <div className="chat-input-actions">
+                <button className="chat-tool-btn" type="button" aria-label="Attach file">
+                  <Paperclip size={17} />
+                </button>
+                <button className="chat-tool-btn" type="button" aria-label="Add image">
+                  <ImagePlus size={17} />
+                </button>
+                <button
+                  className="chat-send-btn"
+                  onClick={handleSend}
+                  disabled={!input.trim()}
+                  type="button"
+                  aria-label="Send message"
+                >
+                  <Send size={17} />
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </main>

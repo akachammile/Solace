@@ -242,10 +242,10 @@ function toggleDimOverlay() {
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 1080,
-    height: 670,
-    minWidth: 800,
-    minHeight: 600,
+    width: 1200,
+    height: 742,
+    minWidth: 980,
+    minHeight: 606,
 
     autoHideMenuBar: true,
     frame: false,
