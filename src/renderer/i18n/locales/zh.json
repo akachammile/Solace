@@ -71,7 +71,11 @@
       "agentRoles": "Agent 角色",
       "noToolEvents": "暂无工具调用",
       "internalNotes": "内部交接",
-      "noInternalNotes": "暂无内部交接"
+      "noInternalNotes": "暂无内部交接",
+      "sidePlaceholderKicker": "预留",
+      "sidePlaceholderTitle": "侧栏占位",
+      "sidePlaceholderHeadline": "等待接入",
+      "sidePlaceholderDescription": "这里先保留为空白工作区，后续用于承载上下文、产物或 Agent 状态。"
     }
   },
   "launchpad": {

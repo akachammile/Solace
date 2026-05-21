@@ -17,13 +17,13 @@
 
   .agent-workspace__status {
     @apply flex flex-col;
-    background: color-mix(in srgb, var(--color-bg-elevated) 54%, var(--color-page-panel));
+    background: var(--color-surface);
   }
 
   .agent-workspace__apprail {
     @apply grid border-r;
     grid-template-columns: var(--app-rail-width) minmax(0, 1fr);
-    background: color-mix(in srgb, var(--color-bg-elevated) 50%, var(--color-page-panel));
+    background: var(--color-surface);
     border-color: var(--color-border);
   }
 
@@ -112,8 +112,7 @@
   .conversation-picker svg,
   .conversation-empty svg,
   .conversation-system-state svg,
-  .agent-card svg,
-  .agent-status-section__head svg {
+  .workspace-side-placeholder__mark svg {
     width: var(--chat-icon-size);
     height: var(--chat-icon-size);
     stroke-width: 1.85;
@@ -166,26 +165,18 @@
   .new-session-card strong,
   .new-session-card small,
   .conversation-item strong,
-  .conversation-item small,
-  .agent-card strong,
-  .agent-card small,
-  .agent-event strong,
-  .agent-event small {
+  .conversation-item small {
     @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
   }
 
   .new-session-card strong,
-  .conversation-item strong,
-  .agent-card strong,
-  .agent-event strong {
+  .conversation-item strong {
     @apply text-[13px] font-semibold;
     color: var(--color-text);
   }
 
   .new-session-card small,
-  .conversation-item small,
-  .agent-card small,
-  .agent-event small {
+  .conversation-item small {
     @apply text-[12px];
     color: var(--color-text-muted);
   }
@@ -384,91 +375,38 @@
     color: var(--color-text-muted);
   }
 
-  .agent-run-dot {
-    @apply h-2.5 w-2.5 shrink-0 rounded-full;
-    background: var(--color-text-dim);
+  .workspace-side-placeholder {
+    @apply grid min-h-0 flex-1 content-center justify-items-center gap-3 px-3 text-center;
+    color: var(--color-text-muted);
   }
 
-  .agent-run-dot--running {
-    background: var(--color-warning);
-  }
-
-  .agent-run-dot--complete {
-    background: var(--color-success);
-  }
-
-  .agent-run-dot--error {
-    background: var(--color-error);
-  }
-
-  .agent-card {
-    @apply mt-3 rounded-xl border p-3;
-    background: color-mix(in srgb, var(--color-bg-elevated) 66%, transparent);
+  .workspace-side-placeholder__mark {
+    @apply grid place-items-center rounded-full border;
+    width: 42px;
+    height: 42px;
+    background: var(--color-surface);
     border-color: var(--color-border);
-  }
-
-  .agent-card__identity {
-    @apply grid grid-cols-[36px_minmax(0,1fr)] items-center gap-3;
-  }
-
-  .agent-avatar {
-    @apply grid h-9 w-9 place-items-center rounded-xl;
-    background: var(--color-hover-soft);
-    color: var(--color-primary-text);
-  }
-
-  .agent-card p,
-  .agent-muted,
-  .agent-event p {
-    @apply m-0 text-[12px] leading-5;
-    color: var(--color-text-muted);
-  }
-
-  .agent-card p {
-    @apply mt-3;
-  }
-
-  .agent-role-list {
-    @apply mt-3 flex flex-wrap gap-1.5;
-  }
-
-  .agent-role-chip {
-    @apply min-h-8 cursor-pointer rounded-lg border border-transparent px-3 text-[12px] font-semibold transition-colors;
-    color: var(--color-text-muted);
-  }
-
-  .agent-role-chip:hover,
-  .agent-role-chip--active {
-    background: var(--color-hover-soft);
-    color: var(--color-primary-text);
-  }
-
-  .agent-role-chip--active {
-    border-color: color-mix(in srgb, var(--color-primary-text) 14%, var(--color-border));
-  }
-
-  .agent-status-section {
-    @apply mt-4 min-h-0;
-  }
-
-  .agent-status-section__head {
-    @apply mb-2 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase;
     color: var(--color-text-dim);
-    letter-spacing: 0.12em;
   }
 
-  .agent-event-list {
-    @apply flex max-h-[190px] flex-col gap-2 overflow-y-auto pr-1;
+  .workspace-side-placeholder h2 {
+    @apply m-0 text-[15px] font-semibold;
+    color: var(--color-text);
   }
 
-  .agent-event {
-    @apply rounded-lg border p-2.5;
-    background: color-mix(in srgb, var(--color-bg-elevated) 62%, transparent);
+  .workspace-side-placeholder p {
+    @apply m-0 max-w-[220px] text-[12px] leading-5;
+    color: var(--color-text-muted);
+  }
+
+  .workspace-side-placeholder__stack {
+    @apply mt-4 flex w-full max-w-[190px] flex-col gap-2;
+  }
+
+  .workspace-side-placeholder__stack span {
+    @apply block h-9 rounded-lg border;
+    background: var(--color-surface);
     border-color: var(--color-border);
-  }
-
-  .agent-event p {
-    @apply mt-1 line-clamp-3;
   }
 }
 
@@ -550,7 +488,7 @@
       @apply min-h-[68px];
     }
 
-    .agent-card p {
+    .workspace-side-placeholder p {
       @apply hidden;
     }
   }

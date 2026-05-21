@@ -10,7 +10,6 @@ import {
 import { useTranslation } from 'react-i18next'
 import {
   Bot,
-  CheckCircle2,
   CircleDot,
   Clock3,
   MessageSquarePlus,
@@ -25,12 +24,9 @@ import { modelProviders } from '@/data/model-catalog'
 import { useSettings } from '@/hooks/useSettings'
 import {
   listAgents,
-  listSwarmMessages,
   onAgentError,
   onAgentMessageComplete,
   onAgentStreamChunk,
-  onAgentToolEvent,
-  onSwarmMessage,
   sendAgentMessage,
 } from '@/services/electron/agents'
 import { listConversations, listMessages } from '@/services/electron/storage'
@@ -38,14 +34,10 @@ import type {
   Agent,
   AgentChatMessage,
   BuiltinAgentId,
-  SwarmMessage,
-  AgentToolEvent,
 } from '@shared/types/agent'
 import type { StoredChatMessage, StoredConversation } from '@shared/types/storage'
 import type { AiSdkModelConfig } from '@shared/types/model-provider'
 import './main.css'
-
-type AgentRunStatus = 'idle' | 'running' | 'complete' | 'error'
 
 interface MainPageProps {
   onOpenSettings: () => void
@@ -108,14 +100,11 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
   const [selectedConversationId, setSelectedConversationId] = useState<string | null>(null)
   const [draftConversationId, setDraftConversationId] = useState<string | null>(null)
   const [messages, setMessages] = useState<StoredChatMessage[]>([])
-  const [swarmMessages, setSwarmMessages] = useState<SwarmMessage[]>([])
-  const [toolEvents, setToolEvents] = useState<AgentToolEvent[]>([])
   const [conversationQuery, setConversationQuery] = useState('')
   const [input, setInput] = useState('')
   const [composerNotice, setComposerNotice] = useState<string | null>(null)
   const [isSending, setIsSending] = useState(false)
   const [isLoadingMessages, setIsLoadingMessages] = useState(false)
-  const [agentRunStatus, setAgentRunStatus] = useState<AgentRunStatus>('idle')
   const activeConversationRef = useRef<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
@@ -204,9 +193,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
   useEffect(() => {
     if (!selectedConversationId) {
       setMessages([])
-      setSwarmMessages([])
-      setToolEvents([])
-      setAgentRunStatus('idle')
       return
     }
 
@@ -217,7 +203,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     let canceled = false
     setIsLoadingMessages(true)
     setComposerNotice(null)
-    setAgentRunStatus('idle')
 
     listMessages(selectedConversationId)
       .then((items) => {
@@ -230,14 +215,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
         if (!canceled) setIsLoadingMessages(false)
       })
 
-    listSwarmMessages(selectedConversationId)
-      .then((items) => {
-        if (!canceled) setSwarmMessages(items.slice(-6))
-      })
-      .catch(() => {
-        if (!canceled) setSwarmMessages([])
-      })
-
     return () => {
       canceled = true
     }
@@ -247,7 +224,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     const disposeChunk = onAgentStreamChunk((chunk) => {
       if (chunk.conversationId !== activeConversationRef.current) return
 
-      setAgentRunStatus('running')
       setMessages((currentMessages) => currentMessages.map((message) => (
         message.id === chunk.messageId
           ? {
@@ -263,7 +239,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     const disposeComplete = onAgentMessageComplete((result) => {
       if (result.conversationId !== activeConversationRef.current) return
 
-      setAgentRunStatus('complete')
       setMessages((currentMessages) => currentMessages.map((message) => (
         message.id === result.messageId
           ? {
@@ -280,7 +255,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     const disposeError = onAgentError((error) => {
       if (error.conversationId !== activeConversationRef.current) return
 
-      setAgentRunStatus('error')
       setComposerNotice(error.message)
       setMessages((currentMessages) => currentMessages.map((message) => (
         message.id === error.messageId
@@ -294,29 +268,10 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
       )))
     })
 
-    const disposeToolEvent = onAgentToolEvent((event) => {
-      if (event.conversationId !== activeConversationRef.current) return
-
-      setToolEvents((currentEvents) => [...currentEvents, event].slice(-8))
-      if (event.status === 'error') {
-        setAgentRunStatus('error')
-      } else {
-        setAgentRunStatus('running')
-      }
-    })
-
-    const disposeSwarmMessage = onSwarmMessage((message) => {
-      if (message.conversationId !== activeConversationRef.current) return
-
-      setSwarmMessages((currentMessages) => [...currentMessages, message].slice(-6))
-    })
-
     return () => {
       disposeChunk()
       disposeComplete()
       disposeError()
-      disposeToolEvent()
-      disposeSwarmMessage()
     }
   }, [refreshConversations])
 
@@ -325,11 +280,8 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     setDraftConversationId(conversationId)
     setSelectedConversationId(conversationId)
     setMessages([])
-    setSwarmMessages([])
-    setToolEvents([])
     setInput('')
     setComposerNotice(null)
-    setAgentRunStatus('idle')
   }
 
   const handleSelectConversation = (conversationId: string) => {
@@ -362,7 +314,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
     setInput('')
     setComposerNotice(null)
     setIsSending(true)
-    setAgentRunStatus('running')
     setMessages((currentMessages) => [
       ...currentMessages,
       createLocalMessage({
@@ -399,7 +350,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
       await refreshConversations()
     } catch (error) {
       const message = error instanceof Error ? error.message : t('main.workspace.sendFailed')
-      setAgentRunStatus('error')
       setComposerNotice(message)
       setMessages((currentMessages) => currentMessages.map((item) => (
         item.id === assistantMessageId
@@ -422,13 +372,6 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
       void handleSend()
     }
   }
-
-  const statusLabel = {
-    idle: t('main.workspace.agentIdle'),
-    running: t('main.workspace.agentRunning'),
-    complete: t('main.workspace.agentComplete'),
-    error: t('main.workspace.agentError'),
-  }[agentRunStatus]
 
   const selectedConversation = visibleConversations.find((conversation) => (
     conversation.id === selectedConversationId
@@ -603,79 +546,25 @@ export function MainPage({ onOpenSettings, rail }: MainPageProps) {
         )}
       </main>
 
-      <aside className="agent-workspace__status" aria-label={t('main.workspace.agentStatus')}>
+      <aside className="agent-workspace__status" aria-label={t('main.workspace.sidePlaceholderTitle')}>
         <div className="workspace-panel-head">
           <div>
-            <span className="workspace-panel-kicker">{t('main.workspace.rightKicker')}</span>
-            <h2>{t('main.workspace.agentStatus')}</h2>
+            <span className="workspace-panel-kicker">{t('main.workspace.sidePlaceholderKicker')}</span>
+            <h2>{t('main.workspace.sidePlaceholderTitle')}</h2>
           </div>
-          <span className={`agent-run-dot agent-run-dot--${agentRunStatus}`} aria-hidden="true" />
         </div>
 
-        <section className="agent-card">
-          <div className="agent-card__identity">
-            <div className="agent-avatar">
-              <Bot aria-hidden="true" />
-            </div>
-            <div>
-              <strong>{activeAgent.name}</strong>
-              <small>{statusLabel}</small>
-            </div>
+        <section className="workspace-side-placeholder">
+          <div className="workspace-side-placeholder__mark" aria-hidden="true">
+            <CircleDot />
           </div>
-          <p>{activeAgent.description}</p>
-        </section>
-
-        <section className="agent-role-list" aria-label={t('main.workspace.agentRoles')}>
-          {visibleAgents.map((agent) => (
-            <button
-              className={`agent-role-chip${agent.id === activeAgent.id ? ' agent-role-chip--active' : ''}`}
-              key={agent.id}
-              onClick={() => setTargetAgentId(agent.id)}
-              type="button"
-            >
-              <span>{agent.name}</span>
-            </button>
-          ))}
-        </section>
-
-        <section className="agent-status-section">
-          <div className="agent-status-section__head">
-            <CheckCircle2 aria-hidden="true" />
-            <span>{t('main.workspace.tools')}</span>
+          <h2>{t('main.workspace.sidePlaceholderHeadline')}</h2>
+          <p>{t('main.workspace.sidePlaceholderDescription')}</p>
+          <div className="workspace-side-placeholder__stack" aria-hidden="true">
+            <span />
+            <span />
+            <span />
           </div>
-          {toolEvents.length === 0 ? (
-            <p className="agent-muted">{t('main.workspace.noToolEvents')}</p>
-          ) : (
-            <div className="agent-event-list custom-scrollbar">
-              {toolEvents.map((event) => (
-                <article className="agent-event" key={event.requestId}>
-                  <strong>{event.toolName}</strong>
-                  <small>{event.status}</small>
-                  <p>{event.query}</p>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="agent-status-section">
-          <div className="agent-status-section__head">
-            <CircleDot aria-hidden="true" />
-            <span>{t('main.workspace.internalNotes')}</span>
-          </div>
-          {swarmMessages.length === 0 ? (
-            <p className="agent-muted">{t('main.workspace.noInternalNotes')}</p>
-          ) : (
-            <div className="agent-event-list custom-scrollbar">
-              {swarmMessages.map((message) => (
-                <article className="agent-event" key={message.id}>
-                  <strong>{message.fromAgentId}</strong>
-                  <small>{message.kind}</small>
-                  <p>{message.content}</p>
-                </article>
-              ))}
-            </div>
-          )}
         </section>
       </aside>
     </div>

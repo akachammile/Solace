@@ -71,7 +71,11 @@
       "agentRoles": "Agent roles",
       "noToolEvents": "No tool calls yet",
       "internalNotes": "Internal handoff",
-      "noInternalNotes": "No internal handoff yet"
+      "noInternalNotes": "No internal handoff yet",
+      "sidePlaceholderKicker": "Reserved",
+      "sidePlaceholderTitle": "Sidebar placeholder",
+      "sidePlaceholderHeadline": "Waiting for content",
+      "sidePlaceholderDescription": "This space is intentionally reserved for context, artifacts, or Agent status later."
     }
   },
   "launchpad": {
