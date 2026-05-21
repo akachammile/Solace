@@ -1,3 +1,5 @@
+import type { BuiltinAgentId } from './agent'
+
 export interface AppInfo {
   appName: string
   appVersion: string
@@ -37,3 +39,22 @@ export interface WindowApi {
 }
 
 export type { AcpApi } from './acp'
+export type { AgentsApi } from './agent'
+export type { StorageApi } from './storage'
+
+export interface ProfileRecord {
+  userId: string
+  createdAt: number
+  lastActiveAt: number
+  totals: {
+    messages: number
+    workspaceStarts: number
+  }
+  usage: {
+    agents: Partial<Record<BuiltinAgentId, number>>
+  }
+}
+
+export interface ProfileApi {
+  getProfile(): Promise<ProfileRecord>
+}

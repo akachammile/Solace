@@ -3,6 +3,17 @@ export interface AgentConfig {
   command: string
   args: string[]
   cwd: string
+  sandbox?: SandboxPolicy
+}
+
+export interface SandboxPolicy {
+  enabled?: boolean
+  allowedRoots?: string[]
+  allowedCommands?: string[]
+  deniedCommands?: string[]
+  inheritEnv?: boolean
+  env?: Record<string, string>
+  maxPromptLength?: number
 }
 
 // === Agent lifecycle ===

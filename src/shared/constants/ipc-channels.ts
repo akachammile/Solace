@@ -28,4 +28,25 @@ export const IPC_CHANNELS = {
     permissionRequest: 'acp:permission-request',
     agentStatusChange: 'acp:agent-status-change',
   },
+  agents: {
+    listAgents: 'agents:list-agents',
+    sendMessage: 'agents:send-message',
+    cancelMessage: 'agents:cancel-message',
+    listSwarmMessages: 'agents:list-swarm-messages',
+    sendSwarmMessage: 'agents:send-swarm-message',
+    streamChunk: 'agents:stream-chunk',
+    messageComplete: 'agents:message-complete',
+    agentError: 'agents:agent-error',
+    swarmMessage: 'agents:swarm-message',
+    toolEvent: 'agents:tool-event',
+  },
+  storage: {
+    getDatabaseInfo: 'storage:get-database-info',
+    listConversations: 'storage:list-conversations',
+    listMessages: 'storage:list-messages',
+    deleteConversation: 'storage:delete-conversation',
+  },
+  profile: {
+    getProfile: 'profile:get-profile',
+  },
 } as const
