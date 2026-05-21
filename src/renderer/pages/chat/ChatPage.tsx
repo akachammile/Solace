@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Send, Paperclip } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import './chat.css'
 
 export function ChatPage() {
   const { t } = useTranslation()
@@ -40,7 +41,7 @@ export function ChatPage() {
       <div className="chat-page__input-area">
         <div className="chat-input-container">
           <button className="chat-input__tool-btn" type="button" aria-label={t('chat.attachFile')}>
-            <Paperclip size={20} />
+            <Paperclip aria-hidden="true" />
           </button>
           <textarea
             className="chat-input__field"
@@ -57,11 +58,11 @@ export function ChatPage() {
             type="button" 
             aria-label={t('chat.typeMessage')}
           >
-            <Send size={20} />
+            <Send aria-hidden="true" />
           </button>
         </div>
         <div className="chat-page__status-bar">
-          <span>Manual / Gemini ready</span>
+          <span>{t('chat.statusReady')}</span>
         </div>
       </div>
     </div>

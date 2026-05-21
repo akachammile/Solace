@@ -1,6 +1,6 @@
 import { ipcRenderer, contextBridge } from 'electron'
 import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
-import type { SystemApi, WindowApi, AcpApi } from '@shared/types/ipc'
+import type { SystemApi, WindowApi, AcpApi, AgentsApi, StorageApi, ProfileApi } from '@shared/types/ipc'
 
 const systemApi: SystemApi = {
   getAppInfo: () => ipcRenderer.invoke(IPC_CHANNELS.system.getAppInfo),
@@ -57,8 +57,55 @@ const acpApi: AcpApi = {
   },
 }
 
+const agentsApi: AgentsApi = {
+  listAgents: () => ipcRenderer.invoke(IPC_CHANNELS.agents.listAgents),
+  sendMessage: (request) => ipcRenderer.invoke(IPC_CHANNELS.agents.sendMessage, request),
+  cancelMessage: (messageId) => ipcRenderer.invoke(IPC_CHANNELS.agents.cancelMessage, messageId),
+  listSwarmMessages: (conversationId) => ipcRenderer.invoke(IPC_CHANNELS.agents.listSwarmMessages, conversationId),
+  sendSwarmMessage: (request) => ipcRenderer.invoke(IPC_CHANNELS.agents.sendSwarmMessage, request),
+  onStreamChunk: (callback) => {
+    const handler = (_event: Electron.IpcRendererEvent, chunk: unknown) => callback(chunk as never)
+    ipcRenderer.on(IPC_CHANNELS.agents.streamChunk, handler)
+    return () => { ipcRenderer.removeListener(IPC_CHANNELS.agents.streamChunk, handler) }
+  },
+  onMessageComplete: (callback) => {
+    const handler = (_event: Electron.IpcRendererEvent, result: unknown) => callback(result as never)
+    ipcRenderer.on(IPC_CHANNELS.agents.messageComplete, handler)
+    return () => { ipcRenderer.removeListener(IPC_CHANNELS.agents.messageComplete, handler) }
+  },
+  onAgentError: (callback) => {
+    const handler = (_event: Electron.IpcRendererEvent, error: unknown) => callback(error as never)
+    ipcRenderer.on(IPC_CHANNELS.agents.agentError, handler)
+    return () => { ipcRenderer.removeListener(IPC_CHANNELS.agents.agentError, handler) }
+  },
+  onSwarmMessage: (callback) => {
+    const handler = (_event: Electron.IpcRendererEvent, message: unknown) => callback(message as never)
+    ipcRenderer.on(IPC_CHANNELS.agents.swarmMessage, handler)
+    return () => { ipcRenderer.removeListener(IPC_CHANNELS.agents.swarmMessage, handler) }
+  },
+  onToolEvent: (callback) => {
+    const handler = (_event: Electron.IpcRendererEvent, event: unknown) => callback(event as never)
+    ipcRenderer.on(IPC_CHANNELS.agents.toolEvent, handler)
+    return () => { ipcRenderer.removeListener(IPC_CHANNELS.agents.toolEvent, handler) }
+  },
+}
+
+const storageApi: StorageApi = {
+  getDatabaseInfo: () => ipcRenderer.invoke(IPC_CHANNELS.storage.getDatabaseInfo),
+  listConversations: () => ipcRenderer.invoke(IPC_CHANNELS.storage.listConversations),
+  listMessages: (conversationId) => ipcRenderer.invoke(IPC_CHANNELS.storage.listMessages, conversationId),
+  deleteConversation: (conversationId) => ipcRenderer.invoke(IPC_CHANNELS.storage.deleteConversation, conversationId),
+}
+
+const profileApi: ProfileApi = {
+  getProfile: () => ipcRenderer.invoke(IPC_CHANNELS.profile.getProfile),
+}
+
 contextBridge.exposeInMainWorld('solace', {
   system: systemApi,
   window: windowApi,
   acp: acpApi,
+  agents: agentsApi,
+  storage: storageApi,
+  profile: profileApi,
 })

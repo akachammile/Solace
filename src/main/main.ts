@@ -5,7 +5,12 @@ import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
 import type { ModelServiceProvider, TestConnectionResult } from '@shared/types/ipc'
 import { registerAcpHandlers } from './acp/handlers'
 import { acpManager } from './acp/manager'
+import { registerBuiltinAgentHandlers } from './agents/handlers'
+import { builtinAgentService } from './agents/builtin-agents'
+import { registerProfileHandlers } from './profile/handlers'
 import { testAnthropicConnection } from './services/anthropic'
+import { registerStorageHandlers } from './storage/handlers'
+import { registerSwarmHandlers, setSwarmWindow } from './swarm/handlers'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -242,13 +247,15 @@ function toggleDimOverlay() {
 
 function createWindow() {
   win = new BrowserWindow({
-    width: 1200,
-    height: 742,
+    width: 1080,
+    height: 680,
     minWidth: 980,
     minHeight: 606,
 
     autoHideMenuBar: true,
+    backgroundColor: '#00000000',
     frame: false,
+    transparent: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     },
@@ -295,9 +302,15 @@ app.on('activate', () => {
 
 app.whenReady().then(() => {
   registerIpcHandlers()
+  registerBuiltinAgentHandlers()
+  registerSwarmHandlers()
+  registerStorageHandlers()
+  registerProfileHandlers()
   createWindow()
   registerAcpHandlers()
   acpManager.setWindow(win!)
+  builtinAgentService.setWindow(win!)
+  setSwarmWindow(win!)
 })
 
 app.on('before-quit', async () => {

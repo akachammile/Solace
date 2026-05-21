@@ -21,7 +21,7 @@ export interface AgentSettings {
   workingDir: string
 }
 
-export interface McpServerSettings {
+export interface MCPServerSettings {
   id: string
   name: string
   command: string
@@ -35,7 +35,7 @@ export interface AppSettings {
   providers: ProviderSettingsMap
   workspace: WorkspaceSettings
   agent: AgentSettings
-  mcp: McpServerSettings[]
+  mcp: MCPServerSettings[]
   skills: SkillSettings
 }
 
@@ -173,14 +173,14 @@ export function useSettings() {
     }))
   }
 
-  const addMcpServer = () => {
+  const addMcpServer = (name: string) => {
     setSettings((prev) => ({
       ...prev,
       mcp: [
         ...prev.mcp,
         {
           id: `mcp-${Date.now()}`,
-          name: 'New MCP Server',
+          name,
           command: '',
           args: '',
           enabled: false,
@@ -189,7 +189,7 @@ export function useSettings() {
     }))
   }
 
-  const updateMcpServer = (id: string, partial: Partial<McpServerSettings>) => {
+  const updateMcpServer = (id: string, partial: Partial<MCPServerSettings>) => {
     setSettings((prev) => ({
       ...prev,
       mcp: prev.mcp.map((server) => (

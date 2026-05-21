@@ -1,31 +1,36 @@
+import { useTranslation } from 'react-i18next'
+import { Archive, Database, Plus, Route, Settings, Terminal } from 'lucide-react'
+
 interface ContextSidebarProps {
   onNewSession: () => void
   onOpenSettings: () => void
 }
 
 export function ContextSidebar({ onNewSession, onOpenSettings }: ContextSidebarProps) {
+  const { t } = useTranslation()
+
   return (
-    <aside className="context-sidebar sharp">
-      <button className="new-experiment-btn sharp" onClick={onNewSession}>
-        <span className="material-symbols-outlined icon">add</span>
-        NEW EXPERIMENT
+    <aside className="context-sidebar">
+      <button className="new-experiment-btn" onClick={onNewSession}>
+        <Plus className="icon" aria-hidden="true" />
+        <span className="context-sidebar__label">{t('contextSidebar.new')}</span>
       </button>
 
       <div className="sidebar-sections">
         <section className="sidebar-section">
-          <h2 className="section-label">System Directory</h2>
+          <h2 className="section-label">{t('contextSidebar.systemDirectory')}</h2>
           <nav className="sidebar-nav">
             <a href="#" className="nav-item active">
-              <span className="material-symbols-outlined">alt_route</span>
-              Neural Paths
+              <Route aria-hidden="true" />
+              <span className="context-sidebar__label">{t('contextSidebar.neural')}</span>
             </a>
             <a href="#" className="nav-item">
-              <span className="material-symbols-outlined">database</span>
-              Session Vault
+              <Database aria-hidden="true" />
+              <span className="context-sidebar__label">{t('contextSidebar.session')}</span>
             </a>
             <a href="#" className="nav-item">
-              <span className="material-symbols-outlined">inventory_2</span>
-              Lab Archives
+              <Archive aria-hidden="true" />
+              <span className="context-sidebar__label">{t('contextSidebar.lab')}</span>
             </a>
             <button 
               className="nav-item"
@@ -34,16 +39,16 @@ export function ContextSidebar({ onNewSession, onOpenSettings }: ContextSidebarP
                 onOpenSettings()
               }}
             >
-              <span className="material-symbols-outlined">settings</span>
-              Settings
+              <Settings aria-hidden="true" />
+              <span className="context-sidebar__label">{t('contextSidebar.settings')}</span>
             </button>
           </nav>
         </section>
       </div>
       <footer className="sidebar-footer">
         <a href="#" className="nav-item">
-          <span className="material-symbols-outlined">terminal</span>
-          System Logs
+          <Terminal aria-hidden="true" />
+          <span className="context-sidebar__label">{t('contextSidebar.systemLogs')}</span>
         </a>
       </footer>
     </aside>

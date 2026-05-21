@@ -1,7 +1,6 @@
 import { spawn, type ChildProcess } from 'node:child_process'
 import { randomUUID } from 'node:crypto'
 import { Readable, Writable } from 'node:stream'
-import { homedir } from 'node:os'
 import type { BrowserWindow } from 'electron'
 import * as acp from '@agentclientprotocol/sdk'
 import { IPC_CHANNELS } from '@shared/constants/ipc-channels'
@@ -10,6 +9,13 @@ import type {
   StreamChunk, PromptResult, AgentError,
   PermissionRequest, PermissionResponse,
 } from '@shared/types/acp'
+import {
+  assertPermissionAllowed,
+  assertPromptAllowed,
+  createAgentSandbox,
+  resolveSandboxCwd,
+  type AgentSandboxScope,
+} from '../security/sandbox'
 
 interface RunningAgent {
   id: string
@@ -18,6 +24,7 @@ interface RunningAgent {
   process: ChildProcess | null
   connection: acp.ClientSideConnection | null
   sessions: Map<string, SessionState>
+  sandbox: AgentSandboxScope
   error?: string
 }
 
@@ -60,19 +67,24 @@ class AcpManager {
 
   async spawnAgent(config: AgentConfig): Promise<AgentInfo> {
     const agentId = `agent-${++this.agentCounter}`
+    const sandbox = createAgentSandbox(config)
 
-    const proc = spawn(config.command, config.args, {
-      cwd: config.cwd.startsWith('~') ? config.cwd.replace(/^~/, homedir()) : config.cwd,
+    const proc = spawn(sandbox.command, sandbox.args, {
+      cwd: sandbox.cwd,
+      env: sandbox.env,
+      shell: false,
       stdio: ['pipe', 'pipe', 'inherit'],
+      windowsHide: true,
     })
 
     const agent: RunningAgent = {
       id: agentId,
-      config,
+      config: sandbox.config,
       status: 'starting',
       process: proc,
       connection: null,
       sessions: new Map(),
+      sandbox,
     }
 
     proc.on('exit', (code) => {
@@ -175,6 +187,20 @@ class AcpManager {
           toolName: params.toolCall?.title ?? 'unknown',
           toolInput: (params.toolCall?.rawInput ?? {}) as Record<string, unknown>,
         }
+        const sessionCwd = agent.sessions.get(params.sessionId)?.cwd
+
+        try {
+          assertPermissionAllowed(req, agent.sandbox, sessionCwd)
+        } catch (error) {
+          const message = error instanceof Error ? error.message : 'Permission denied by sandbox policy'
+          this.send<AgentError>(IPC_CHANNELS.acp.agentError, {
+            agentId,
+            sessionId: params.sessionId,
+            code: 'SANDBOX_VIOLATION',
+            message,
+          })
+          return { outcome: { outcome: 'cancelled' as const } }
+        }
 
         this.send<PermissionRequest>(IPC_CHANNELS.acp.permissionRequest, req)
 
@@ -221,7 +247,7 @@ class AcpManager {
       throw new Error('Agent is not running')
     }
 
-    const resolvedCwd = cwd.startsWith('~') ? cwd.replace(/^~/, homedir()) : cwd
+    const resolvedCwd = resolveSandboxCwd(cwd, agent.sandbox)
 
     const result = await agent.connection.newSession({ cwd: resolvedCwd, mcpServers: [] })
     const session: SessionState = {
@@ -264,6 +290,8 @@ class AcpManager {
     if (!agent.sessions.has(sessionId)) {
       throw new Error(`Session not found: ${sessionId}`)
     }
+
+    assertPromptAllowed(promptText, agent.sandbox)
 
     const result = await agent.connection.prompt({
       sessionId,

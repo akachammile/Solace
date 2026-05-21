@@ -1,27 +1,35 @@
 import { useState } from 'react'
-import { AppTopBar } from '@/pages/bionic-console/components/AppTopBar'
-import { ContextSidebar } from '@/components/sidebar/ContextSidebar'
-import { WorkbenchPage } from '@/pages/workbench/WorkbenchPage'
-import { SettingsOverlay } from '@/components/settings/SettingsOverlay'
+import { AppRail } from '@/components/layout/AppRail'
+import { AppTopBar } from '@/components/layout/AppTopBar'
+import { MainPage } from '@/pages/Main/MainPage'
+import { SettingsOverlay } from '@/pages/Settings/SettingsPage'
 
 function AppContent() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-  const [viewState, setViewState] = useState<'welcome' | 'chat'>('welcome')
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
   return (
-    <div className="app-shell">
-      <AppTopBar />
-      <div className="app-main">
-        <ContextSidebar 
-          onNewSession={() => setViewState('welcome')} 
-          onOpenSettings={() => setIsSettingsOpen(true)}
-        />
-        <main className="page-content">
-          <WorkbenchPage 
-            viewState={viewState} 
-            onStartChat={() => setViewState('chat')} 
-          />
-        </main>
+    <div className="app-shell" data-theme={theme}>
+      <div className="app-content-wrapper">
+        <AppTopBar />
+        <div className="app-main">
+          <main className="page-content">
+            <div className="page-content__surface">
+              <MainPage
+                onOpenSettings={() => setIsSettingsOpen(true)}
+                rail={(
+                  <AppRail
+                    activeItemId={isSettingsOpen ? 'settings' : 'chat'}
+                    theme={theme}
+                    onOpenChat={() => setIsSettingsOpen(false)}
+                    onOpenSettings={() => setIsSettingsOpen(true)}
+                    onToggleTheme={() => setTheme((currentTheme) => currentTheme === 'light' ? 'dark' : 'light')}
+                  />
+                )}
+              />
+            </div>
+          </main>
+        </div>
       </div>
       
       {isSettingsOpen && <SettingsOverlay onClose={() => setIsSettingsOpen(false)} />}

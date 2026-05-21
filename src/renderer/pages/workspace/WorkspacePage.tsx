@@ -1,14 +1,15 @@
-import { ArtifactsSidebar } from '../bionic-console/components/ArtifactsSidebar'
-import { CreatorAxis } from '../bionic-console/components/CreatorAxis'
-import { FocusPanel } from '../bionic-console/components/FocusPanel'
-import { GoldenRatioLayout } from '../../components/layout/GoldenRatioLayout'
+import { ArtifactsSidebar } from '@/components/Editor/ArtifactsSidebar'
+import { CreatorAxis } from '@/components/Editor/CreatorAxis'
+import { FocusPanel } from '@/components/Editor/FocusPanel'
+import { GoldenRatioLayout } from '@/components/layout/GoldenRatioLayout'
 import type {
   ArtifactConfig,
   ConsoleTabId,
   FocusTabId,
   SpaceConfig,
   WorkspaceConfig,
-} from '../bionic-console/types'
+} from '@/components/Editor/types'
+import './workspace.css'
 
 interface WorkspacePageProps {
   space: SpaceConfig

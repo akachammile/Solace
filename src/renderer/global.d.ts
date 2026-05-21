@@ -1,4 +1,4 @@
-import type { SystemApi, WindowApi, AcpApi } from '@shared/types/ipc'
+import type { SystemApi, WindowApi, AcpApi, AgentsApi, StorageApi, ProfileApi } from '@shared/types/ipc'
 
 declare global {
   interface Window {
@@ -6,6 +6,9 @@ declare global {
       system: SystemApi
       window: WindowApi
       acp: AcpApi
+      agents: AgentsApi
+      storage: StorageApi
+      profile: ProfileApi
     }
   }
 }
