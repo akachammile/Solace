@@ -1,0 +1,557 @@
+@reference "../../assets/styles.css";
+
+@layer components {
+  .agent-workspace {
+    @apply relative grid h-full min-h-0 w-full overflow-hidden;
+    grid-template-columns: minmax(260px, 2fr) minmax(420px, 6fr) minmax(220px, 2fr);
+    background: var(--color-page-panel);
+    color: var(--color-text);
+  }
+
+  .agent-workspace__apprail,
+  .agent-workspace__conversations,
+  .agent-workspace__conversation,
+  .agent-workspace__status {
+    @apply min-h-0 min-w-0 overflow-hidden;
+  }
+
+  .agent-workspace__status {
+    @apply flex flex-col;
+    background: color-mix(in srgb, var(--color-bg-elevated) 54%, var(--color-page-panel));
+  }
+
+  .agent-workspace__apprail {
+    @apply grid border-r;
+    grid-template-columns: var(--app-rail-width) minmax(0, 1fr);
+    background: color-mix(in srgb, var(--color-bg-elevated) 50%, var(--color-page-panel));
+    border-color: var(--color-border);
+  }
+
+  .workspace-apprail-slot {
+    @apply min-h-0 min-w-0 border-r;
+    border-color: color-mix(in srgb, var(--color-border) 78%, transparent);
+    background: var(--color-app-chrome);
+  }
+
+  .workspace-apprail-slot .app-rail {
+    @apply h-full w-full;
+    background: transparent;
+  }
+
+  .agent-workspace__conversations {
+    @apply flex flex-col p-3;
+  }
+
+  .agent-workspace__status {
+    @apply border-l p-3;
+    border-color: var(--color-border);
+  }
+
+  .agent-workspace__conversation {
+    @apply flex flex-col;
+    background: var(--color-page-panel);
+  }
+
+  .workspace-panel-head,
+  .conversation-stage-head {
+    @apply flex shrink-0 items-center justify-between gap-3;
+  }
+
+  .workspace-panel-head {
+    @apply min-h-11;
+  }
+
+  .workspace-panel-head h2,
+  .conversation-stage-head h1,
+  .conversation-picker h2 {
+    @apply m-0 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap font-semibold;
+    color: var(--color-text);
+    letter-spacing: 0;
+  }
+
+  .workspace-panel-head h2 {
+    @apply text-[15px];
+  }
+
+  .conversation-stage-head h1 {
+    @apply text-[18px];
+  }
+
+  .workspace-panel-kicker {
+    @apply block font-mono text-[11px] font-semibold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .workspace-icon-button,
+  .workspace-tool-button,
+  .workspace-send-button {
+    @apply grid shrink-0 cursor-pointer place-items-center transition-colors;
+    width: var(--chat-action-size);
+    height: var(--chat-action-size);
+    color: var(--color-text-muted);
+  }
+
+  .workspace-icon-button,
+  .workspace-tool-button {
+    @apply rounded-lg;
+  }
+
+  .workspace-icon-button:hover,
+  .workspace-tool-button:hover {
+    background: var(--color-hover-soft);
+    color: var(--color-primary-text);
+  }
+
+  .workspace-icon-button svg,
+  .workspace-tool-button svg,
+  .workspace-send-button svg,
+  .workspace-primary-button svg,
+  .workspace-secondary-button svg,
+  .conversation-model-pill svg,
+  .conversation-picker svg,
+  .conversation-empty svg,
+  .conversation-system-state svg,
+  .agent-card svg,
+  .agent-status-section__head svg {
+    width: var(--chat-icon-size);
+    height: var(--chat-icon-size);
+    stroke-width: 1.85;
+  }
+
+  .conversation-search {
+    @apply mt-3 grid h-9 shrink-0 grid-cols-[16px_minmax(0,1fr)] items-center gap-2 rounded-lg border px-3;
+    background: color-mix(in srgb, var(--color-bg-elevated) 70%, transparent);
+    border-color: var(--color-border);
+    color: var(--color-text-dim);
+  }
+
+  .conversation-search:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary-text) 24%, var(--color-border));
+  }
+
+  .conversation-search svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .conversation-search input {
+    @apply min-w-0 bg-transparent text-[13px] outline-none;
+    color: var(--color-text);
+  }
+
+  .conversation-search input::placeholder {
+    color: var(--color-text-dim);
+  }
+
+  .new-session-card {
+    @apply mt-3 grid min-h-[66px] cursor-pointer grid-cols-[32px_minmax(0,1fr)] items-center gap-3 rounded-lg border p-3 text-left transition-colors;
+    background: var(--color-primary-container);
+    border-color: color-mix(in srgb, var(--color-primary-text) 12%, var(--color-border));
+    color: var(--color-primary-text);
+  }
+
+  .new-session-card:hover {
+    background: var(--color-hover-strong);
+    border-color: color-mix(in srgb, var(--color-primary-text) 22%, var(--color-border));
+  }
+
+  .new-session-card svg {
+    @apply rounded-lg p-2;
+    width: 32px;
+    height: 32px;
+    background: var(--color-hover-soft);
+  }
+
+  .new-session-card strong,
+  .new-session-card small,
+  .conversation-item strong,
+  .conversation-item small,
+  .agent-card strong,
+  .agent-card small,
+  .agent-event strong,
+  .agent-event small {
+    @apply block min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .new-session-card strong,
+  .conversation-item strong,
+  .agent-card strong,
+  .agent-event strong {
+    @apply text-[13px] font-semibold;
+    color: var(--color-text);
+  }
+
+  .new-session-card small,
+  .conversation-item small,
+  .agent-card small,
+  .agent-event small {
+    @apply text-[12px];
+    color: var(--color-text-muted);
+  }
+
+  .conversation-list {
+    @apply mt-3 flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto pr-1;
+  }
+
+  .conversation-empty,
+  .conversation-system-state {
+    @apply grid place-items-center gap-2 text-center text-[13px];
+    color: var(--color-text-muted);
+  }
+
+  .conversation-empty {
+    @apply min-h-[180px];
+  }
+
+  .conversation-item {
+    @apply grid min-h-[64px] cursor-pointer grid-cols-[minmax(0,1fr)_auto] items-center gap-2 rounded-lg border border-transparent px-3 text-left transition-colors;
+    color: var(--color-text);
+  }
+
+  .conversation-item:hover {
+    background: var(--color-hover-soft);
+  }
+
+  .conversation-item--active {
+    background: color-mix(in srgb, var(--color-bg-elevated) 82%, var(--color-hover-soft));
+    border-color: color-mix(in srgb, var(--color-primary-text) 14%, var(--color-border));
+  }
+
+  .conversation-item__main {
+    @apply min-w-0;
+  }
+
+  .conversation-item time {
+    @apply font-mono text-[11px];
+    color: var(--color-text-dim);
+  }
+
+  .conversation-stage-head {
+    @apply border-b px-5 py-3;
+    border-color: var(--color-border);
+  }
+
+  .conversation-model-pill {
+    @apply flex max-w-[46%] shrink-0 items-center gap-2 overflow-hidden rounded-lg border px-3 py-2 text-[12px];
+    background: color-mix(in srgb, var(--color-bg-elevated) 56%, transparent);
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .conversation-model-pill span {
+    @apply min-w-0 overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .conversation-picker {
+    @apply mx-auto grid h-full max-w-[520px] place-items-center content-center gap-4 px-8 text-center;
+  }
+
+  .conversation-picker > svg {
+    @apply rounded-2xl border p-4;
+    width: 64px;
+    height: 64px;
+    background: var(--color-primary-container);
+    border-color: var(--color-border);
+    color: var(--color-primary-text);
+  }
+
+  .conversation-picker h2 {
+    @apply text-[24px];
+  }
+
+  .conversation-picker p {
+    @apply m-0 text-[14px] leading-6;
+    color: var(--color-text-muted);
+  }
+
+  .conversation-picker__actions {
+    @apply flex flex-wrap justify-center gap-2;
+  }
+
+  .workspace-primary-button,
+  .workspace-secondary-button {
+    @apply inline-flex min-h-10 cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 text-[13px] font-semibold transition-colors;
+  }
+
+  .workspace-primary-button {
+    background: var(--color-primary-container);
+    border-color: color-mix(in srgb, var(--color-primary-text) 16%, var(--color-border));
+    color: var(--color-primary-text);
+  }
+
+  .workspace-secondary-button {
+    background: transparent;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+  }
+
+  .workspace-primary-button:hover,
+  .workspace-secondary-button:hover {
+    background: var(--color-hover-soft);
+    color: var(--color-primary-text);
+  }
+
+  .conversation-messages {
+    @apply flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-5 py-5;
+  }
+
+  .conversation-system-state {
+    @apply h-full;
+  }
+
+  .workspace-message {
+    @apply max-w-[78%] rounded-xl border px-4 py-3;
+    background: color-mix(in srgb, var(--color-bg-elevated) 76%, transparent);
+    border-color: var(--color-border);
+  }
+
+  .workspace-message--user {
+    @apply self-end;
+    background: var(--color-primary-container);
+    border-color: color-mix(in srgb, var(--color-primary-text) 14%, var(--color-border));
+  }
+
+  .workspace-message--assistant {
+    @apply self-start;
+  }
+
+  .workspace-message__meta {
+    @apply mb-2 flex items-center justify-between gap-4 font-mono text-[11px] uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .workspace-message p {
+    @apply m-0 whitespace-pre-wrap break-words text-[14px] leading-6;
+    color: var(--color-text);
+  }
+
+  .workspace-composer {
+    @apply m-2 mt-0 shrink-0 overflow-hidden rounded-[22px] border;
+    background: color-mix(in srgb, var(--color-bg-elevated) 88%, transparent);
+    border-color: color-mix(in srgb, var(--color-primary-text) 14%, var(--color-border));
+  }
+
+  .workspace-composer:focus-within {
+    border-color: color-mix(in srgb, var(--color-primary-text) 28%, var(--color-border));
+  }
+
+  .workspace-composer__notice {
+    @apply flex items-center justify-between gap-3 border-b px-4 py-2 text-[12px];
+    background: color-mix(in srgb, var(--color-warning) 12%, transparent);
+    border-color: var(--color-border);
+    color: var(--color-text);
+  }
+
+  .workspace-composer__notice button {
+    @apply shrink-0 cursor-pointer font-semibold;
+    color: var(--color-primary-text);
+  }
+
+  .workspace-composer__input {
+    @apply min-h-[86px] w-full resize-none bg-transparent px-4 py-3 font-body outline-none;
+    color: var(--color-text);
+    font-size: var(--chat-input-font-size);
+    line-height: var(--chat-input-line-height);
+  }
+
+  .workspace-composer__input::placeholder {
+    color: var(--color-text-dim);
+  }
+
+  .workspace-composer__toolbar {
+    @apply flex min-h-11 items-center justify-between gap-2 px-3 pb-2;
+  }
+
+  .workspace-composer__tools {
+    @apply flex items-center gap-2;
+  }
+
+  .workspace-send-button {
+    @apply rounded-full;
+    background: var(--color-primary-container);
+    color: var(--color-primary-text);
+  }
+
+  .workspace-send-button:hover:not(:disabled) {
+    background: var(--color-hover-strong);
+  }
+
+  .workspace-send-button:disabled {
+    @apply cursor-not-allowed opacity-40;
+    background: var(--color-outline-variant);
+    color: var(--color-text-muted);
+  }
+
+  .agent-run-dot {
+    @apply h-2.5 w-2.5 shrink-0 rounded-full;
+    background: var(--color-text-dim);
+  }
+
+  .agent-run-dot--running {
+    background: var(--color-warning);
+  }
+
+  .agent-run-dot--complete {
+    background: var(--color-success);
+  }
+
+  .agent-run-dot--error {
+    background: var(--color-error);
+  }
+
+  .agent-card {
+    @apply mt-3 rounded-xl border p-3;
+    background: color-mix(in srgb, var(--color-bg-elevated) 66%, transparent);
+    border-color: var(--color-border);
+  }
+
+  .agent-card__identity {
+    @apply grid grid-cols-[36px_minmax(0,1fr)] items-center gap-3;
+  }
+
+  .agent-avatar {
+    @apply grid h-9 w-9 place-items-center rounded-xl;
+    background: var(--color-hover-soft);
+    color: var(--color-primary-text);
+  }
+
+  .agent-card p,
+  .agent-muted,
+  .agent-event p {
+    @apply m-0 text-[12px] leading-5;
+    color: var(--color-text-muted);
+  }
+
+  .agent-card p {
+    @apply mt-3;
+  }
+
+  .agent-role-list {
+    @apply mt-3 flex flex-wrap gap-1.5;
+  }
+
+  .agent-role-chip {
+    @apply min-h-8 cursor-pointer rounded-lg border border-transparent px-3 text-[12px] font-semibold transition-colors;
+    color: var(--color-text-muted);
+  }
+
+  .agent-role-chip:hover,
+  .agent-role-chip--active {
+    background: var(--color-hover-soft);
+    color: var(--color-primary-text);
+  }
+
+  .agent-role-chip--active {
+    border-color: color-mix(in srgb, var(--color-primary-text) 14%, var(--color-border));
+  }
+
+  .agent-status-section {
+    @apply mt-4 min-h-0;
+  }
+
+  .agent-status-section__head {
+    @apply mb-2 flex items-center gap-2 font-mono text-[11px] font-semibold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .agent-event-list {
+    @apply flex max-h-[190px] flex-col gap-2 overflow-y-auto pr-1;
+  }
+
+  .agent-event {
+    @apply rounded-lg border p-2.5;
+    background: color-mix(in srgb, var(--color-bg-elevated) 62%, transparent);
+    border-color: var(--color-border);
+  }
+
+  .agent-event p {
+    @apply mt-1 line-clamp-3;
+  }
+}
+
+@layer utilities {
+  @media (max-width: 1180px) {
+    .agent-workspace {
+      grid-template-columns: minmax(244px, 2fr) minmax(420px, 6fr);
+    }
+
+    .agent-workspace__status {
+      @apply absolute bottom-2 right-2 top-2 z-10;
+      width: min(320px, 48vw);
+      transform: translateX(calc(100% - 38px));
+      transition: transform var(--transition-fast);
+    }
+
+    .agent-workspace__status:hover,
+    .agent-workspace__status:focus-within {
+      transform: translateX(0);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .agent-workspace {
+      grid-template-columns: minmax(216px, 32vw) minmax(0, 1fr);
+    }
+
+    .conversation-stage-head {
+      @apply px-4;
+    }
+
+    .conversation-model-pill {
+      @apply hidden;
+    }
+
+    .workspace-message {
+      @apply max-w-[88%];
+    }
+  }
+
+  @media (max-width: 720px) {
+    .agent-workspace {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(150px, 28vh) minmax(0, 1fr);
+    }
+
+    .agent-workspace__apprail {
+      @apply border-b border-r-0;
+      grid-template-columns: var(--app-rail-width) minmax(0, 1fr);
+    }
+
+    .conversation-list {
+      @apply flex-row overflow-x-auto overflow-y-hidden pb-1 pr-0;
+    }
+
+    .conversation-item {
+      @apply w-[220px] shrink-0;
+    }
+
+    .new-session-card {
+      @apply hidden;
+    }
+
+    .agent-workspace__status {
+      @apply hidden;
+    }
+  }
+
+  @media (max-height: 620px) {
+    .conversation-stage-head {
+      @apply py-2;
+    }
+
+    .conversation-messages {
+      @apply gap-3 px-4 py-4;
+    }
+
+    .workspace-composer__input {
+      @apply min-h-[68px];
+    }
+
+    .agent-card p {
+      @apply hidden;
+    }
+  }
+}

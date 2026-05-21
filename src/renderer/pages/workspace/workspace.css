@@ -1,0 +1,707 @@
+﻿@reference "../../assets/styles.css";
+
+@layer components {
+  .golden-ratio-layout {
+    @apply box-border grid h-full w-full flex-1 gap-4 overflow-hidden p-4;
+    grid-template-columns: minmax(240px, 1fr) minmax(420px, 1.618fr) minmax(240px, 1fr);
+  }
+
+  .golden-ratio-layout__left,
+  .golden-ratio-layout__main,
+  .golden-ratio-layout__right {
+    @apply flex min-h-0 min-w-0 flex-col overflow-hidden rounded-xl;
+    background: var(--color-bg-elevated);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  }
+
+  .bc-launchpad,
+  .bc-workspace,
+  .bc-engine-room {
+    @apply h-full min-h-0 min-w-0 flex-1;
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .bc-launchpad {
+    @apply grid justify-items-center overflow-hidden px-6;
+    grid-template-rows: auto minmax(0, 226px);
+    align-content: center;
+    row-gap: clamp(24px, 5vh, 46px);
+    padding-top: clamp(18px, 4vh, 42px);
+    padding-bottom: clamp(20px, 5vh, 46px);
+  }
+
+  .bc-launchpad__main {
+    @apply flex w-full max-w-[560px] flex-col items-center justify-center gap-6 bg-transparent p-0 text-center shadow-none;
+  }
+
+  .bc-brain {
+    @apply grid place-items-center rounded-[22px];
+    width: clamp(68px, 10vh, 84px);
+    height: clamp(68px, 10vh, 84px);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: 0 22px 52px rgba(24, 24, 27, 0.16);
+  }
+
+  .bc-brain svg {
+    width: clamp(34px, 5vh, 44px);
+    height: clamp(34px, 5vh, 44px);
+  }
+
+  .bc-launchpad__copy {
+    @apply max-w-[520px] text-center;
+  }
+
+  .bc-launchpad__copy h1,
+  .bc-engine-room__header h1 {
+    @apply m-0 font-extrabold italic leading-[1.08];
+    color: var(--color-text);
+    font-size: clamp(1.55rem, 4vh, 1.95rem);
+  }
+
+  .bc-launchpad__copy span,
+  .editor-artifacts-label,
+  .editor-focus-label,
+  .bc-panel-label,
+  .bc-engine-room__header span {
+    @apply text-xs font-extrabold uppercase;
+    color: var(--color-text-dim);
+    letter-spacing: 0.24em;
+  }
+
+  .bc-launchpad__copy p {
+    @apply hidden;
+  }
+
+  .bc-launchpad__actions {
+    @apply flex flex-wrap justify-center gap-3;
+  }
+
+  .bc-button,
+  .editor-artifacts-icon-button,
+  .bc-recent-space,
+  .editor-artifact-row,
+  .editor-console-tab,
+  .editor-console-composer__tools button,
+  .editor-console-send-button,
+  .editor-focus-tab,
+  .editor-focus-action,
+  .editor-focus-knowledge-source,
+  .bc-export-button,
+  .bc-engine-room__back,
+  .bc-engine-card {
+    @apply cursor-pointer border transition-all;
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
+    color: var(--color-text);
+    -webkit-app-region: no-drag;
+  }
+
+  .bc-button {
+    @apply inline-flex h-12 min-w-[170px] items-center justify-center gap-2 rounded-lg px-[18px] text-[0.92rem] font-bold;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .bc-button svg,
+  .bc-panel-label svg,
+  .bc-export-button svg,
+  .editor-artifacts-icon-button svg,
+  .editor-artifact-row__icon svg,
+  .editor-console-tab svg,
+  .editor-console-composer__tools button svg,
+  .editor-console-send-button svg,
+  .editor-focus-tab svg,
+  .editor-focus-current-card svg,
+  .editor-focus-action__icon svg,
+  .editor-focus-flow svg,
+  .bc-engine-card__icon svg {
+    width: var(--nav-icon-size);
+    height: var(--nav-icon-size);
+  }
+
+  .bc-button--primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-on-primary);
+    box-shadow: 0 18px 34px rgba(24, 24, 27, 0.12);
+  }
+
+  .bc-launchpad__recent {
+    @apply grid h-full min-h-0 w-full max-w-[620px] overflow-hidden rounded-lg border p-3.5;
+    grid-template-rows: auto minmax(0, 1fr);
+    background: var(--color-panel-glass);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .bc-launchpad__recent-head {
+    @apply flex items-center justify-between gap-2.5 px-0.5 pb-2.5;
+  }
+
+  .bc-launchpad__recent-head > div,
+  .bc-recent-space__text,
+  .bc-axis-toolbar div {
+    @apply min-w-0;
+  }
+
+  .bc-launchpad__recent-head .bc-panel-label {
+    @apply inline-flex items-center gap-2 text-xs normal-case;
+    color: #5f6b7a;
+    letter-spacing: 0;
+  }
+
+  .bc-launchpad__recent-head p {
+    @apply mt-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs;
+    color: var(--color-text-muted);
+  }
+
+  .bc-launchpad__recent-head > strong {
+    @apply grid h-[22px] w-7 shrink-0 place-items-center rounded-full border text-xs font-bold;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: #5f6b7a;
+  }
+
+  .bc-launchpad__recent-list,
+  .editor-artifacts-list,
+  .editor-focus-action-list,
+  .editor-focus-knowledge-list {
+    @apply flex flex-col;
+  }
+
+  .bc-launchpad__recent-list {
+    @apply min-h-0 gap-2 overflow-y-auto;
+  }
+
+  .bc-recent-space {
+    @apply grid min-h-[58px] w-full grid-cols-[8px_minmax(0,1fr)_auto] items-center gap-3 rounded-lg border-0 px-3 text-left shadow-none;
+    background: var(--color-surface);
+  }
+
+  .bc-recent-space i {
+    @apply h-2.5 w-2.5 rounded-full;
+    background: #d4d4d8;
+  }
+
+  .bc-recent-space strong,
+  .bc-recent-space small,
+  .bc-recent-space em,
+  .bc-axis-toolbar strong,
+  .editor-artifact-row__title {
+    @apply block overflow-hidden text-ellipsis whitespace-nowrap;
+  }
+
+  .bc-recent-space strong {
+    @apply text-sm font-bold;
+    color: #2c3748;
+  }
+
+  .bc-recent-space small {
+    @apply mt-0.5 text-xs;
+    color: var(--color-text-muted);
+  }
+
+  .bc-recent-space em {
+    @apply text-xs not-italic;
+    color: #a7afba;
+  }
+
+  .editor-artifacts-sidebar {
+    @apply flex min-h-0 min-w-0 flex-col overflow-y-auto border-r px-2.5 py-5;
+    border-color: var(--color-border);
+  }
+
+  .editor-artifacts-header,
+  .bc-axis-toolbar,
+  .editor-focus-current-card div,
+  .editor-focus-flow div,
+  .editor-focus-action {
+    @apply flex items-center;
+  }
+
+  .editor-artifacts-header {
+    @apply justify-between gap-2.5 px-0.5 pb-3.5;
+  }
+
+  .editor-artifacts-icon-button,
+  .bc-engine-card__icon,
+  .editor-focus-action__icon,
+  .editor-console-send-button {
+    @apply grid place-items-center rounded-lg;
+  }
+
+  .editor-artifacts-icon-button {
+    width: var(--chrome-icon-button-size);
+    height: var(--chrome-icon-button-size);
+    color: var(--color-text-muted);
+  }
+
+  .editor-artifacts-list {
+    @apply gap-2;
+  }
+
+  .editor-artifact-row {
+    @apply flex min-h-12 w-full items-center gap-2.5 rounded-lg px-3.5 text-left;
+  }
+
+  .editor-artifact-row--active {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .editor-artifact-row__icon {
+    color: var(--color-accent);
+  }
+
+  .editor-artifact-row__title {
+    @apply min-w-0 text-sm font-bold;
+  }
+
+  .editor-artifact-accent-purple .editor-artifact-row__icon {
+    color: var(--semantic-creative);
+  }
+
+  .editor-artifact-accent-green .editor-artifact-row__icon {
+    color: var(--semantic-terminal);
+  }
+
+  .editor-artifact-accent-orange .editor-artifact-row__icon {
+    color: var(--semantic-connective);
+  }
+
+  .bc-creator-axis {
+    @apply grid min-h-0 min-w-0 flex-1 overflow-hidden;
+    grid-template-rows: 52px minmax(0, 1fr) minmax(226px, 270px);
+  }
+
+  .bc-axis-toolbar {
+    @apply min-h-[52px] justify-between gap-4 px-6 pb-1.5 pt-2;
+  }
+
+  .bc-axis-toolbar strong {
+    @apply mt-1 text-sm;
+    color: var(--color-text);
+  }
+
+  .bc-export-button,
+  .bc-engine-room__back {
+    @apply inline-flex items-center gap-2 rounded-lg px-3 text-sm font-bold;
+    color: var(--color-text-muted);
+  }
+
+  .bc-export-button {
+    @apply h-8;
+  }
+
+  .editor-canvas-shell {
+    @apply min-h-0 min-w-0 overflow-hidden px-6 pb-5;
+  }
+
+  .editor-canvas-card {
+    @apply h-full min-h-0 overflow-auto rounded-lg border;
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .editor-canvas-document,
+  .editor-canvas-map,
+  .editor-canvas-slides,
+  .editor-canvas-code {
+    @apply min-h-full p-5;
+  }
+
+  .editor-canvas-document {
+    @apply text-base leading-7;
+    color: var(--color-text);
+  }
+
+  .editor-canvas-document p {
+    @apply mb-3.5;
+  }
+
+  .editor-canvas-placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .editor-canvas-map {
+    @apply flex flex-col justify-center gap-2.5;
+  }
+
+  .editor-canvas-node,
+  .editor-slide-card {
+    @apply rounded-lg border p-3;
+  }
+
+  .editor-canvas-node {
+    @apply flex min-h-[54px] items-center gap-3;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .editor-canvas-node span,
+  .editor-slide-card span {
+    @apply text-xs font-extrabold;
+  }
+
+  .editor-canvas-node span {
+    color: var(--semantic-connective);
+  }
+
+  .editor-canvas-slides {
+    @apply grid grid-cols-3 gap-3;
+  }
+
+  .editor-slide-card {
+    @apply flex min-h-[164px] flex-col justify-between p-4;
+    background: var(--color-surface-container);
+    border-color: var(--color-border);
+  }
+
+  .editor-slide-card span {
+    color: var(--semantic-creative);
+  }
+
+  .editor-slide-card strong {
+    @apply text-lg;
+  }
+
+  .editor-canvas-code {
+    @apply m-0 font-mono text-sm leading-7;
+    background: var(--color-surface-container);
+    color: var(--color-text);
+  }
+
+  .editor-console-dock {
+    @apply grid min-h-0 min-w-0 border-t;
+    grid-template-rows: 42px minmax(54px, 1fr) 88px;
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border);
+  }
+
+  .editor-console-tabs {
+    @apply flex items-stretch gap-2 border-b px-4;
+    border-color: var(--color-border);
+  }
+
+  .editor-console-tab {
+    @apply inline-flex items-center gap-2 border-x-0 border-t-0 border-b-2 px-3 text-xs font-extrabold uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .editor-console-tab--active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    box-shadow: none;
+  }
+
+  .editor-console-note {
+    @apply px-[18px] pb-2 pt-3;
+  }
+
+  .editor-console-note span {
+    @apply text-xs font-extrabold;
+    color: #d0d6e0;
+  }
+
+  .editor-console-note p {
+    @apply mt-2 flex min-h-11 w-full max-w-[416px] items-center rounded-lg border px-3.5 text-sm;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    color: #4b5563;
+  }
+
+  .editor-console-composer {
+    @apply mx-[18px] mb-2.5 overflow-hidden rounded-lg border;
+    background: var(--color-surface);
+    border-color: #d8dee8;
+  }
+
+  .editor-console-composer__tools {
+    @apply flex min-h-[30px] items-center gap-2.5 border-b px-3;
+    border-color: var(--color-border);
+  }
+
+  .editor-console-composer__tools button {
+    @apply inline-flex items-center gap-1.5 border-0 bg-transparent text-xs font-extrabold uppercase;
+    color: #9aa4b3;
+  }
+
+  .editor-console-composer__input {
+    @apply grid min-h-14 items-center gap-2.5 py-2 pl-3.5 pr-2.5;
+    grid-template-columns: minmax(0, 1fr) calc(var(--chat-action-size) + 8px);
+  }
+
+  .editor-console-composer__input textarea {
+    @apply min-w-0 resize-none text-sm outline-none;
+    color: var(--color-text);
+  }
+
+  .editor-console-composer__input textarea::placeholder {
+    color: #9aa4b3;
+  }
+
+  .editor-console-send-button {
+    width: var(--chat-action-size);
+    height: var(--chat-action-size);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .editor-focus-panel {
+    @apply flex min-h-0 min-w-0 flex-col overflow-hidden;
+    background: var(--color-bg-elevated);
+  }
+
+  .editor-focus-tabs {
+    @apply flex min-h-[50px] shrink-0 items-center gap-2.5 border-b px-4;
+    border-color: var(--color-border);
+  }
+
+  .editor-focus-tab {
+    @apply inline-flex min-h-[30px] items-center gap-2 rounded-lg px-2.5 text-xs font-extrabold;
+    color: #b1bbc9;
+  }
+
+  .editor-focus-tab--active {
+    background: var(--color-primary-container);
+    border-color: var(--color-border);
+    color: var(--color-accent);
+  }
+
+  .editor-focus-panel__body {
+    @apply flex min-h-0 flex-1 flex-col overflow-y-auto;
+  }
+
+  .editor-focus-current-card {
+    @apply mx-4 mb-7 mt-5 flex min-h-[88px] flex-col justify-center gap-3 rounded-lg border border-l-[5px] p-3.5;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+    border-left-color: var(--color-outline);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .editor-focus-current-card div,
+  .editor-focus-flow div {
+    @apply gap-2;
+    color: var(--color-accent);
+  }
+
+  .editor-focus-current-card span,
+  .editor-focus-flow span {
+    @apply text-xs font-extrabold uppercase;
+    color: #c8ceda;
+  }
+
+  .editor-focus-current-card strong {
+    @apply text-base;
+  }
+
+  .editor-focus-actions {
+    @apply px-4;
+  }
+
+  .editor-focus-action-list {
+    @apply relative mt-3.5 gap-2.5;
+  }
+
+  .editor-focus-action-list::before {
+    @apply absolute bottom-[-14px] left-[31px] top-[-18px] w-px;
+    content: "";
+    background: var(--color-border);
+  }
+
+  .editor-focus-action {
+    @apply relative z-[1] min-h-[66px] w-full gap-3 rounded-lg p-3 text-left;
+  }
+
+  .editor-focus-action__icon {
+    @apply shrink-0;
+    width: var(--chat-action-size);
+    height: var(--chat-action-size);
+    background: var(--color-surface);
+    color: #a3adbc;
+  }
+
+  .editor-focus-action span:last-child {
+    @apply min-w-0;
+  }
+
+  .editor-focus-action strong,
+  .editor-focus-action small,
+  .editor-focus-knowledge-source strong,
+  .editor-focus-knowledge-source small {
+    @apply block;
+  }
+
+  .editor-focus-action strong,
+  .editor-focus-knowledge-source strong {
+    @apply text-sm;
+    color: var(--color-text);
+  }
+
+  .editor-focus-action small,
+  .editor-focus-knowledge-source small {
+    @apply text-xs;
+    color: #a3adbc;
+  }
+
+  .editor-focus-flow {
+    @apply mx-4 mb-4 mt-auto rounded-lg border p-3.5;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .editor-focus-flow__bar {
+    @apply mt-3.5 h-1.5 overflow-hidden rounded-full;
+    background: var(--color-outline-variant);
+  }
+
+  .editor-focus-flow__bar span {
+    @apply block h-full w-[68%];
+    background: var(--color-accent);
+  }
+
+  .editor-focus-flow p {
+    @apply mt-2.5 text-xs leading-6;
+    color: var(--color-accent);
+  }
+
+  .editor-focus-knowledge-list {
+    @apply gap-2.5 p-5;
+  }
+
+  .editor-focus-knowledge-source {
+    @apply flex min-h-[58px] w-full flex-col items-start justify-center gap-1 rounded-lg p-3 text-left;
+  }
+
+  .bc-engine-room {
+    @apply grid overflow-hidden p-6;
+    place-items: center;
+  }
+
+  .bc-engine-room__inner {
+    @apply mx-auto max-h-full w-full max-w-[860px] overflow-y-auto p-0.5;
+  }
+
+  .bc-engine-room__back {
+    @apply h-[34px];
+  }
+
+  .bc-engine-room__header {
+    @apply text-center;
+    margin-top: clamp(24px, 5vh, 44px);
+  }
+
+  .bc-engine-room__header p {
+    @apply mx-auto mt-2.5 max-w-[460px] text-sm;
+    color: var(--color-text-muted);
+  }
+
+  .bc-engine-grid {
+    @apply grid grid-cols-2 gap-3.5;
+    margin-top: clamp(24px, 5vh, 38px);
+  }
+
+  .bc-engine-card {
+    @apply flex min-h-[126px] flex-col items-start gap-2 rounded-lg p-4 text-left;
+  }
+
+  .bc-engine-card__icon {
+    width: var(--chat-action-size);
+    height: var(--chat-action-size);
+    background: var(--color-surface);
+    color: var(--color-accent);
+  }
+
+  .bc-engine-card strong {
+    @apply text-base;
+    color: var(--color-text);
+  }
+
+  .bc-engine-card small {
+    @apply text-sm leading-6;
+    color: var(--color-text-muted);
+  }
+
+  .bc-button:hover,
+  .editor-artifacts-icon-button:hover,
+  .bc-recent-space:hover,
+  .editor-artifact-row:hover,
+  .editor-console-tab:hover,
+  .editor-console-composer__tools button:hover,
+  .editor-focus-tab:hover,
+  .editor-focus-action:hover,
+  .editor-focus-knowledge-source:hover,
+  .bc-export-button:hover,
+  .bc-engine-room__back:hover,
+  .bc-engine-card:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 30%, var(--color-border));
+    background: var(--color-hover-soft);
+    box-shadow: none;
+  }
+}
+
+
+@layer utilities {
+  @media (max-width: 1120px) {
+    .golden-ratio-layout {
+      grid-template-columns: minmax(200px, 1fr) minmax(380px, 1.618fr) minmax(240px, 1fr);
+    }
+
+    .bc-engine-grid {
+      @apply grid-cols-1;
+    }
+
+    .bc-launchpad {
+      @apply px-5;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .golden-ratio-layout {
+      grid-template-columns: minmax(200px, 1fr) minmax(380px, 1.618fr);
+    }
+
+    .golden-ratio-layout__right {
+      @apply hidden;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .golden-ratio-layout {
+      @apply grid-cols-1;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .editor-artifacts-sidebar {
+      @apply border-b border-r-0 px-2.5 py-3.5;
+    }
+
+    .bc-creator-axis {
+      grid-template-rows: 48px minmax(0, 1fr) minmax(218px, 248px);
+    }
+
+    .editor-canvas-shell {
+      @apply px-4 pb-5;
+    }
+
+    .editor-focus-panel {
+      @apply hidden;
+    }
+
+    .bc-launchpad {
+      @apply px-4;
+      grid-template-rows: auto minmax(0, 220px);
+      row-gap: 22px;
+    }
+
+    .bc-launchpad__actions {
+      @apply w-full;
+    }
+
+    .bc-button {
+      @apply min-w-0 flex-[1_1_154px];
+    }
+  }
+}

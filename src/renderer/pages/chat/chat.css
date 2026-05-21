@@ -1,0 +1,98 @@
+﻿@reference "../../assets/styles.css";
+
+@layer components {
+  .chat-page {
+    @apply flex h-full flex-1 flex-col overflow-hidden;
+    background: var(--color-page-panel);
+    color: var(--color-text);
+  }
+
+  .chat-page__messages {
+    @apply flex flex-col gap-6 px-5 py-10;
+  }
+
+  .chat-page__empty {
+    @apply flex flex-1 items-center justify-center text-2xl font-light opacity-60;
+    color: var(--color-text-muted);
+  }
+
+  .chat-message {
+    @apply max-w-[85%] rounded-xl px-4 py-3 text-[0.95rem] leading-6;
+  }
+
+  .chat-message__content {
+    @apply min-w-0 whitespace-pre-wrap break-words;
+  }
+
+  .chat-message--user {
+    @apply self-end;
+    background: var(--color-accent);
+    color: var(--color-on-primary);
+  }
+
+  .chat-message--assistant {
+    @apply self-start border;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .chat-page__input-area {
+    @apply px-6 pb-6;
+  }
+
+  .chat-input-container {
+    @apply flex items-end gap-3 rounded-2xl border px-3 py-2 shadow-lg transition-colors;
+    background: var(--color-surface);
+    border-color: var(--color-border);
+  }
+
+  .chat-input-container:focus-within {
+    border-color: var(--color-accent);
+  }
+
+  .chat-input__field {
+    @apply min-h-10 max-h-[200px] flex-1 resize-none bg-transparent py-2 outline-none;
+    font-size: var(--chat-input-font-size);
+    line-height: var(--chat-input-line-height);
+  }
+
+  .chat-input__tool-btn,
+  .chat-input__send-btn {
+    @apply flex cursor-pointer items-center justify-center rounded-lg transition-all;
+    width: var(--chat-action-size);
+    height: var(--chat-action-size);
+    color: var(--color-text-muted);
+  }
+
+  .chat-input__tool-btn svg,
+  .chat-input__send-btn svg {
+    width: var(--chat-icon-size);
+    height: var(--chat-icon-size);
+    stroke-width: 1.85;
+  }
+
+  .chat-input__tool-btn:hover {
+    background: var(--color-hover-soft);
+    color: var(--color-text);
+  }
+
+  .chat-input__send-btn {
+    color: var(--color-accent);
+  }
+
+  .chat-input__send-btn:disabled {
+    @apply cursor-not-allowed opacity-40;
+    color: var(--color-text-muted);
+  }
+
+  .chat-input__send-btn:not(:disabled):hover {
+    @apply scale-110;
+  }
+
+  .chat-page__status-bar {
+    @apply mt-2 flex justify-end pr-2 text-xs opacity-50;
+    color: var(--color-text-muted);
+  }
+
+}
+
